@@ -18,3 +18,16 @@
         <a href="<?= $GLOBALS['base_url'] ?>/pages/about.php">Rreth Nesh</a>
         <a href="<?= $GLOBALS['base_url'] ?>/pages/faq.php">FAQ</a>
         <a href="<?= $GLOBALS['base_url'] ?>/pages/contact.php">Kontakti</a>
+
+        <?php if ($user): ?>
+            <?php if ($user->getRole() === 'admin'): ?>
+                <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-dashboard.php">Admin Dashboard</a>
+            <?php else: ?>
+                <a href="<?= $GLOBALS['base_url'] ?>/pages/customer-dashboard.php">Customer Dashboard</a>
+            <?php endif; ?>
+            <a href="<?= $GLOBALS['base_url'] ?>/logout.php">Logout</a>
+        <?php else: ?>
+            <a href="<?= $GLOBALS['base_url'] ?>/login.php">Login</a>
+        <?php endif; ?>
+    </div>
+</nav>
