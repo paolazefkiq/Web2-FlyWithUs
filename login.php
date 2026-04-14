@@ -41,3 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['password']
     ])) {
         $matchedUser = findUserByLogin($login, $password, $dummyUsers);
+
+         if ($matchedUser) {
+            $userObject = buildUserObject($matchedUser);
+
+            $_SESSION['user'] = $userObject;
+            $_SESSION['role'] = $userObject->getRole();
+            $_SESSION['last_login'] = date('Y-m-d H:i:s');
