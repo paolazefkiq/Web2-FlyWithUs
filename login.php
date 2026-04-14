@@ -26,3 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $emailPattern = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
     $usernamePattern = '/^[A-Za-z0-9_]{4,20}$/';
+     if ($login === '') {
+        $errors['login'] = 'Ju lutem plotësoni email-in ose username-in.';
+    } elseif (!preg_match($emailPattern, $login) && !preg_match($usernamePattern, $login)) {
+        $errors['login'] = 'Login duhet të jetë email i vlefshëm ose username me 4-20 karaktere.';
+    }
+
+    if ($password === '') {
+        $errors['password'] = 'Ju lutem plotësoni fjalëkalimin.';
+    }
+
+    if (!array_filter([
+        $errors['login'],
+        $errors['password']
+    ])) {
+        $matchedUser = findUserByLogin($login, $password, $dummyUsers);
