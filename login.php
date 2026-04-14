@@ -8,3 +8,13 @@ if (isLoggedIn()) {
     : $GLOBALS['base_url'] . '/pages/customer-dashboard.php'
 );
 }
+
+$old = [
+    'login' => ''
+];
+
+$errors = [
+    'login' => '',
+    'password' => '',
+    'general' => ''
+];
