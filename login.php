@@ -18,3 +18,11 @@ $errors = [
     'password' => '',
     'general' => ''
 ];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login = trim($_POST['login'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    $old['login'] = $login;
+
+    $emailPattern = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
+    $usernamePattern = '/^[A-Za-z0-9_]{4,20}$/';
