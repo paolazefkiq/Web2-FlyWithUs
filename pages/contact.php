@@ -59,4 +59,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ' . $GLOBALS['base_url'] . '/pages/contact.php');
     exit;
 }
+
+$_SESSION['contact_message'] = [
+    'name' => $old['name'],
+    'email' => $old['email'],
+    'subject' => $old['subject'],
+    'message' => $old['message'],
+    'sent_at' => date('Y-m-d H:i:s')
+];
+
+$_SESSION['contact_popup_success'] = "
+    Mesazhi u dërgua me sukses!<br><br>
+    <strong>Emri:</strong> " . e($old['name']) . "<br>
+    <strong>Email:</strong> " . e($old['email']) . "<br>
+    <strong>Subjekti:</strong> " . e($old['subject']) . "
+";
 ?>
