@@ -157,3 +157,74 @@ require_once __DIR__ . '/../includes/nav.php';
         <div class="field-error"><?= e($errors['email']) ?></div>
     <?php endif; ?>
 </div>
+
+ <div class="float-group">
+    <span class="input-icon">✎</span>
+    <input
+        type="text"
+        id="c-subject"
+        name="subject"
+        placeholder=" "
+        value="<?= e($old['subject']) ?>"
+        class="<?= $errors['subject'] ? 'input-error' : '' ?>"
+    >
+    <label for="c-subject">Subjekti</label>
+    <?php if ($errors['subject']): ?>
+        <div class="field-error"><?= e($errors['subject']) ?></div>
+    <?php endif; ?>
+</div>
+
+ <div class="float-group">
+    <span class="input-icon">🗨</span>
+    <textarea
+        id="c-message"
+        name="message"
+        placeholder=" "
+        class="<?= $errors['message'] ? 'input-error' : '' ?>"
+    ><?= e($old['message']) ?></textarea>
+    <label for="c-message">Mesazhi</label>
+    <?php if ($errors['message']): ?>
+        <div class="field-error"><?= e($errors['message']) ?></div>
+    <?php endif; ?>
+</div>
+
+    <button class="button-modern" type="submit">Dërgo Mesazh</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div id="contactPopup" class="popup-overlay" style="<?= $popupSuccess ? 'display: flex;' : 'display: none;' ?>">
+    <div class="popup-box">
+        <h2>Mesazhi u dërgua me sukses!</h2>
+        <p id="contactPopupMessage"><?= $popupSuccess ?></p>
+        <button id="contactClose" type="button">Mbylle</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const contactPopup = document.getElementById("contactPopup");
+    const contactClose = document.getElementById("contactClose");
+
+    if (contactPopup && contactClose) {
+        contactClose.addEventListener("click", () => {
+            contactPopup.style.display = "none";
+        });
+
+        contactPopup.addEventListener("click", (e) => {
+            if (e.target === contactPopup) {
+                contactPopup.style.display = "none";
+            }
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                contactPopup.style.display = "none";
+            }
+        });
+    }
+});
+</script>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
