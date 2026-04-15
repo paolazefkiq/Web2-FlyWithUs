@@ -37,3 +37,8 @@ $faqItems = [
         'answer' => 'Po, mund të rezervoni deri në 5 bileta në një rezervim.'
     ]
 ];
+
+$GLOBALS['site_name'] = 'Fly With Us';
+$GLOBALS['support_email'] = 'support@flywithus.com';
+$GLOBALS['support_phone'] = '+383 49 123 456';
+$GLOBALS['base_url'] = '/FlyWithUsPhase1';
