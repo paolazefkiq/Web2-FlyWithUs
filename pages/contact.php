@@ -74,4 +74,12 @@ $_SESSION['contact_popup_success'] = "
     <strong>Email:</strong> " . e($old['email']) . "<br>
     <strong>Subjekti:</strong> " . e($old['subject']) . "
 ";
+
+header('Location: ' . $GLOBALS['base_url'] . '/pages/contact.php');
+exit;
+    }
+
+$pageTitle = 'Kontakti';
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/nav.php';
 ?>
