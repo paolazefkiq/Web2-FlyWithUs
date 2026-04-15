@@ -119,3 +119,41 @@ require_once __DIR__ . '/../includes/nav.php';
                 </div>
             </div>
         </div>
+
+        <div class="contact-col contact-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23456.789012345!2d21.1521!3d42.3833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13545abcdef12345%3A0xabcdef123456789!2sFerizaj%2C%20Kosovo!5e0!3m2!1sen!2s!4v1700000000000" width="100%" height="450" style="border:0;" loading="lazy"></iframe>
+        </div>
+
+         <div class="contact-col contact-right">
+            <form class="contact-form-box" method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" novalidate>
+                <div class="float-group">
+    <span class="input-icon">𖤘</span>
+    <input
+        type="text"
+        id="c-name"
+        name="name"
+        placeholder=" "
+        value="<?= e($old['name']) ?>"
+        class="<?= $errors['name'] ? 'input-error' : '' ?>"
+    >
+    <label for="c-name">Emri Juaj</label>
+    <?php if ($errors['name']): ?>
+        <div class="field-error"><?= e($errors['name']) ?></div>
+    <?php endif; ?>
+</div> 
+
+ <div class="float-group">
+    <span class="input-icon">✉</span>
+    <input
+        type="text"
+        id="c-email"
+        name="email"
+        placeholder=" "
+        value="<?= e($old['email']) ?>"
+        class="<?= $errors['email'] ? 'input-error' : '' ?>"
+    >
+    <label for="c-email">Email Juaj</label>
+    <?php if ($errors['email']): ?>
+        <div class="field-error"><?= e($errors['email']) ?></div>
+    <?php endif; ?>
+</div>
