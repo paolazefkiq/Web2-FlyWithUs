@@ -83,3 +83,39 @@ $pageTitle = 'Kontakti';
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/nav.php';
 ?>
+
+<section class="contact-page">
+    <div class="contact-page-header">
+        <span class="contact-badge">Na Kontaktoni</span>
+        <h1>Kontaktoni për Çdo Pyetje</h1>
+    </div>
+
+    <div class="contact-layout-grid">
+        <div class="contact-col contact-left">
+            <h2>Na Kontaktoni</h2>
+            <p class="contact-left-text">Na shkruani për pyetje rreth fluturimeve, rezervimeve apo bashkëpunimeve.</p>
+
+            <div class="contact-info-item">
+                <div class="contact-icon-box">⚲</div>
+                <div>
+                    <h3>Zyra</h3>
+                    <p>Rr. "Iliria" Nr. 27, Ferizaj, Kosovë</p>
+                </div>
+            </div>
+
+            <div class="contact-info-item">
+                <div class="contact-icon-box">✆</div>
+                <div>
+                    <h3>Mobile</h3>
+                    <p><?= e($GLOBALS['support_phone']) ?></p>
+                </div>
+            </div>
+
+            <div class="contact-info-item">
+                <div class="contact-icon-box">✉</div>
+                <div>
+                    <h3>Email</h3>
+                    <p><?= e($GLOBALS['support_email']) ?></p>
+                </div>
+            </div>
+        </div>
