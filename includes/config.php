@@ -91,3 +91,92 @@ function redirect($path) {
     header("Location: " . $path);
     exit;
 }
+
+function currentUser(): ?User
+{
+    if (!isset($_SESSION['user'])) {
+        return null;
+    }
+
+    if ($_SESSION['user'] instanceof User) {
+        return $_SESSION['user'];
+    }
+
+    unset($_SESSION['user']);
+    return null;
+}
+
+function isLoggedIn(): bool
+{
+    return isset($_SESSION['user']) && $_SESSION['user'] instanceof User;
+}
+
+function requireLogin(): void
+{
+    if (!isLoggedIn()) {
+        $_SESSION['flash_error'] = 'Duhet të kyçeni fillimisht.';
+        redirect($GLOBALS['base_url'] . '/login.php');
+    }
+}
+
+function requireRole(string $role): void
+{
+    requireLogin();
+    $user = currentUser();
+    if (!$user || $user->getRole() !== $role) {
+        $_SESSION['flash_error'] = 'Nuk keni qasje në këtë faqe.';
+        redirect($GLOBALS['base_url'] . '/index.php');
+    }
+}
+
+function getFlash(string $key): ?string
+{
+    if (!isset($_SESSION[$key])) {
+        return null;
+    }
+    $message = $_SESSION[$key];
+    unset($_SESSION[$key]);
+    return $message;
+}
+
+function sortDestinationsByPrice(array $destinations): array
+{
+    usort($destinations, function ($a, $b) {
+        return $a['price'] <=> $b['price'];
+    });
+    return $destinations;
+}
+
+function findUserByLogin(string $login, string $password, array $users): ?array
+{
+    foreach ($users as $user) {
+        if (($user['email'] === $login || $user['username'] === $login) && $user['password'] === $password) {
+            return $user;
+        }
+    }
+    return null;
+}
+
+function buildUserObject(array $userData): User
+{
+    if ($userData['role'] === 'admin') {
+        $user = new Admin(
+            $userData['id'],
+            $userData['name'],
+            $userData['email'],
+            $userData['username'],
+            $userData['role'],
+            $userData['favoriteDestination']
+        );
+    } else {
+        $user = new Customer(
+            $userData['id'],
+            $userData['name'],
+            $userData['email'],
+            $userData['username'],
+            $userData['role'],
+            $userData['favoriteDestination']
+        );
+    }
+    return $user;
+}
