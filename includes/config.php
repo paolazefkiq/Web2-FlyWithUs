@@ -60,3 +60,24 @@ $flightMatrix = [
     'Podgorica' => ['New York' => 450, 'Paris' => 340, 'Tokyo' => 800, 'Dubai' => 550, 'Berlin' => 310, 'London' => 380, 'Rome' => 350],
     'Sarajevo' => ['New York' => 440, 'Paris' => 330, 'Tokyo' => 790, 'Dubai' => 540, 'Berlin' => 305, 'London' => 375, 'Rome' => 345]
 ];
+
+$dummyUsers = [
+    [
+        'id' => 1,
+        'name' => 'Customer FlyWithUs',
+        'email' => 'customer@flywithus.com',
+        'username' => 'customer1',
+        'password' => 'Customer123',
+        'role' => 'customer',
+        'favoriteDestination' => 'Paris'
+    ],
+    [
+        'id' => 2,
+        'name' => 'Admin FlyWithUs',
+        'email' => 'admin@flywithus.com',
+        'username' => 'admin1',
+        'password' => 'Admin123',
+        'role' => 'admin',
+        'favoriteDestination' => 'Tokyo'
+    ]
+];
