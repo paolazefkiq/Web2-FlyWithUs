@@ -89,7 +89,21 @@ Admin:
   * ruajtjen e preferencës së qytetit
 
 ## Funksionalitetet kryesore
+* Formë për rezervim në faqen kryesore
+* Validim server-side me shfaqje të gabimeve
+* Popup për konfirmimin e rezervimit
+* Contact form me validim dhe feedback
+* Dashboard për admin dhe customer
+* Faqe informative si About dhe FAQ
 
 ## Shënime
+* Projekti nuk përdor databazë në Fazën 1
+* Të gjitha të dhënat janë të simuluara
+* Rrugët janë të bazuara në base_url të konfiguruar në projekt
 
 ## Dorëzimi
+Dorëzimi përfshin:
+
+* Kodin e projektit
+* README me udhëzime
+* Screenshot ose video demonstrim të funksionaliteteve
