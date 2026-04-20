@@ -7,12 +7,86 @@ Ky projekt është realizuar në kuadër të lëndës “Programimi në ueb nga 
 Në Fazën 1, aplikacioni është zhvilluar duke përdorur PHP pa databazë, ku të gjitha të dhënat janë të simuluara (dummy). Projekti demonstron përdorimin e koncepteve bazë të PHP-së, programimit të orientuar në objekte, validimit server-side, si dhe menaxhimit të sesioneve dhe cookies.
 
 ## Struktura e projektit
-
-## Ekzekutimi i projektit
+1. Instaloni dhe hapni XAMPP
+2. Vendosni folderin e projektit në:
+   `C:\xampp\htdocs\`
+3. Sigurohuni që folderi quhet:
+   `FlyWithUsPhase1`
+4. Startoni Apache në XAMPP
+5. Hapni browser dhe shkoni te:
+   `http://localhost/FlyWithUsPhase1`
 
 ## Login
 
+Aplikacioni përdor kredenciale statike të ruajtura në kod.
+
+Customer:
+
+* Email: [customer@flywithus.com](mailto:customer@flywithus.com)
+* Username: customer1
+* Password: Customer123
+
+Admin:
+
+* Email: [admin@flywithus.com](mailto:admin@flywithus.com)
+* Username: admin1
+* Password: Admin123
+
 ## Përputhja me kërkesat e Fazës 1
+### 1. Struktura e aplikacionit
+
+* Projekti përmban më shumë se 4 faqe funksionale
+* Përdoret include/require për header, navigim dhe footer
+* Folderët janë të organizuar në mënyrë të qartë (pages, includes, classes, assets)
+
+### 2. Login/Logout pa databazë
+
+* Kredencialet janë të ruajtura në kod (hardcoded)
+* Nuk përdoret databazë
+* Përdoret session për ruajtjen e gjendjes së përdoruesit
+* Implementohen dy role: admin dhe customer
+* Qasja ndryshon në bazë të rolit (dashboard-e të ndryshme)
+
+### 3. Konceptet bazë të PHP
+
+* Përdorim i variablave dhe variablave globale
+* Funksione ndihmëse (helper functions)
+* Struktura kushtore (if/else)
+* Cikle (foreach, for)
+* Arrays:
+
+  * numeric arrays
+  * associative arrays
+  * multidimensional arrays
+* Sortime me funksionin usort()
+
+### 4. OOP në PHP
+
+* Klasa të implementuara: User, Admin, Customer
+* Konstruktor në klasën bazë
+* Metoda get dhe set
+* Enkapsulim përmes përdorimit të protected properties
+* Trashëgimi (Admin dhe Customer zgjerojnë klasën User)
+
+### 5. Validimi me RegEx
+
+* Validim server-side në PHP
+* Validim për:
+
+  * emër
+  * email
+  * username
+
+### 6. Sessions dhe Cookies
+
+* Përdorimi i session për:
+
+  * ruajtjen e përdoruesit të kyçur
+  * të dhënat e rezervimit
+  * mesazhe të formave
+* Përdorimi i cookies për:
+
+  * ruajtjen e preferencës së qytetit
 
 ## Funksionalitetet kryesore
 
