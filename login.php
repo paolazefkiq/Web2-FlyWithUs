@@ -55,3 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 time() + 60 * 60 * 24 * 30,
                 '/'
             );
+ $_SESSION['flash_success'] = 'Jeni kyçur me sukses.';
+            redirect($userObject->getRole() === 'admin'
+    ? $GLOBALS['base_url'] . '/pages/admin-dashboard.php'
+    : $GLOBALS['base_url'] . '/pages/customer-dashboard.php'
+);
+        } else {
+            $errors['general'] = 'Kredencialet nuk janë të sakta.';
+        }
+    }
+}
