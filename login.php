@@ -78,3 +78,17 @@ require_once __DIR__ . '/includes/nav.php';
             Customer: customer@flywithus.com ose customer1 / Customer123<br>
             Admin: admin@flywithus.com ose admin1 / Admin123
             </p>
+<?php if ($errors['general']): ?>
+                <div class="alert error"><?= e($errors['general']) ?></div>
+            <?php endif; ?>
+
+            <form method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" novalidate>
+                <input
+                    type="text"
+                    name="login"
+                    placeholder="Email ose username"
+                    value="<?= e($old['login']) ?>"
+                >
+                <?php if ($errors['login']): ?>
+                    <div class="field-error"><?= e($errors['login']) ?></div>
+                <?php endif; ?>
