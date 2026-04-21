@@ -48,3 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user'] = $userObject;
             $_SESSION['role'] = $userObject->getRole();
             $_SESSION['last_login'] = date('Y-m-d H:i:s');
+
+              setcookie(
+                'preferred_city',
+                $userObject->getFavoriteDestination(),
+                time() + 60 * 60 * 24 * 30,
+                '/'
+            );
