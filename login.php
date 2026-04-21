@@ -70,3 +70,11 @@ $pageTitle = 'Login';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/nav.php';
 ?>
+<main class="page-wrap narrow">
+    <section class="about-form single-box">
+        <div class="about-form-box" id="about-form-box">
+            <h3>Login</h3>
+            <p class="demo-note">
+            Customer: customer@flywithus.com ose customer1 / Customer123<br>
+            Admin: admin@flywithus.com ose admin1 / Admin123
+            </p>
