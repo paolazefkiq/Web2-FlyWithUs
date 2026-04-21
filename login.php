@@ -92,3 +92,19 @@ require_once __DIR__ . '/includes/nav.php';
                 <?php if ($errors['login']): ?>
                     <div class="field-error"><?= e($errors['login']) ?></div>
                 <?php endif; ?>
+ <input
+                    type="password"
+                    name="password"
+                    placeholder="Fjalëkalimi"
+                >
+                <?php if ($errors['password']): ?>
+                    <div class="field-error"><?= e($errors['password']) ?></div>
+                <?php endif; ?>
+
+                <button type="submit">Kyçu</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
