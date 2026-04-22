@@ -10,3 +10,10 @@ $flashSuccess = getFlash('flash_success');
 $sortedUsers = $dummyUsers;
 usort($sortedUsers, fn($a, $b) => strcmp($a['role'], $b['role']));
 ?>
+
+<main class="page-wrap narrow dashboard-page">
+    <h1>Admin Dashboard</h1>
+    <?php if ($flashSuccess): ?>
+    <div class="alert success"><?= e($flashSuccess) ?></div>
+<?php endif; ?>
+<?php if ($user->canManageUsers()): ?>
