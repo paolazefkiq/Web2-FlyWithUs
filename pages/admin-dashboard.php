@@ -24,3 +24,15 @@ usort($sortedUsers, fn($a, $b) => strcmp($a['role'], $b['role']));
         <p><strong>Menaxhim përdoruesish:</strong> <?= $user->canManageUsers() ? 'Po' : 'Jo' ?></p>
     </div>
     <?php endif; ?>
+<div class="dashboard-card">
+        <h3>Përdoruesit statikë</h3>
+        <table class="simple-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Emri</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
