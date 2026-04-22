@@ -36,3 +36,17 @@ usort($sortedUsers, fn($a, $b) => strcmp($a['role'], $b['role']));
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($sortedUsers as $dummy): ?>
+                    <tr>
+                        <td><?= e((string)$dummy['id']) ?></td>
+                        <td><?= e($dummy['name']) ?></td>
+                        <td><?= e($dummy['email']) ?></td>
+                        <td><?= e($dummy['role']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
