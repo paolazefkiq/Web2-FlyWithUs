@@ -17,3 +17,10 @@ usort($sortedUsers, fn($a, $b) => strcmp($a['role'], $b['role']));
     <div class="alert success"><?= e($flashSuccess) ?></div>
 <?php endif; ?>
 <?php if ($user->canManageUsers()): ?>
+      <div class="dashboard-card">
+        <p><strong>Përdoruesi:</strong> <?= e($user->getName()) ?></p>
+        <p><strong>Roli:</strong> <?= e($user->getRole()) ?></p>
+        <p><strong>Mesazhi:</strong> <?= e($user->getDashboardMessage()) ?></p>
+        <p><strong>Menaxhim përdoruesish:</strong> <?= $user->canManageUsers() ? 'Po' : 'Jo' ?></p>
+    </div>
+    <?php endif; ?>
