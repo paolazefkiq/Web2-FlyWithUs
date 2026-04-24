@@ -21,3 +21,15 @@ $flashSuccess = getFlash('flash_success');
         <p><strong>Last login:</strong> <?= e($_SESSION['last_login'] ?? 'Pa të dhëna') ?></p>
         <p><strong>Favorite destination:</strong> <?= e($user->getFavoriteDestination()) ?></p>
     </div>
+     <?php if ($lastBooking): ?>
+        <div class="dashboard-card">
+            <h3>Rezervimi i fundit nga session</h3>
+            <p><strong>Emri:</strong> <?= e($lastBooking['name']) ?></p>
+            <p><strong>Rruga:</strong> <?= e($lastBooking['route']) ?></p>
+            <p><strong>Data:</strong> <?= e($lastBooking['date']) ?></p>
+            <p><strong>Totali:</strong> $<?= e((string)$lastBooking['total']) ?></p>
+        </div>
+    <?php endif; ?>
+</main>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
