@@ -102,4 +102,21 @@ $_SESSION['popup_success'] = "
     Ne do t'ju kontaktojmë së shpejti në <strong>" . e($old['email']) . "</strong>.<br>
     Totali i rezervimit: <strong>$" . e((string)$total) . "</strong>.
 ";
+
+header("Location: " . $_SERVER['PHP_SELF']);
+exit;
+    }
+}
+$hasErrors = !empty(array_filter($errors));
+?>
+
+<header class="hero" id="hero">
+    <div class="hero-overlay">
+        <h1 class="hero-title">Fly With Us</h1>
+        <p class="hero-subtitle">
+            Zbuloni qytete të bukura në të gjithë botën me bileta fleksibile dhe çmime të shkëlqyera.
+        </p>
+        <a href="#booking" class="btn-primary">Rezervo Tani</a>
+    </div>
+</header>
 ?>
