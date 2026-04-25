@@ -240,7 +240,7 @@ $hasErrors = !empty(array_filter($errors));
     <?php if ($errors['passengers']): ?>
         <div class="field-error"><?= e($errors['passengers']) ?></div>
     <?php endif; ?>
-</div>
+    </div>
                 </div>
 
         <div class="booking-button-container">
@@ -262,4 +262,49 @@ $hasErrors = !empty(array_filter($errors));
             </ul>
         </div>
     </section>
+    <section class="destinations" id="destinations">
+        <h2>Destinacionet Popullore</h2>
+        <p class="section-subtitle">
+            Qytete të përzgjedhura me fluturime ditore me çmime të jashtëzakonshme.
+        </p>
+
+        <div class="cards">
+            <article class="card">
+                <img src="<?= $GLOBALS['base_url'] ?>/assets/img/destination1.jpg" alt="New York skyline">
+                <div class="card-content">
+                    <h3>New York</h3>
+                    <p>
+                        Përjeto qytetin që kurrë nuk fle. I përsosur për blerje, shfaqje dhe pamje të paharrueshme.<br>
+                        <span>Duke filluar nga <strong>$399</strong></span>
+                    </p>
+                    <button type="button" class="card-btn" data-city="New York">Shiko Oferta</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="<?= $GLOBALS['base_url'] ?>/assets/img/destination2.avif" alt="Paris Eiffel Tower">
+                <div class="card-content">
+                    <h3>Paris</h3>
+                    <p>
+                        Ecje romantike pranë lumit Seine, muzeume me famë botërore dhe ushqim i shijshëm në çdo cep.<br>
+                        <span>Duke filluar nga <strong>$299</strong></span>
+                    </p>
+                    <button type="button" class="card-btn" data-city="Paris">Shiko Oferta</button>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="<?= $GLOBALS['base_url'] ?>/assets/img/destination3.jpg" alt="Tokyo night lights">
+                <div class="card-content">
+                    <h3>Tokyo</h3>
+                    <p>
+                        Një përzierje e përsosur e traditës dhe teknologjisë. Tempuj, drita neon dhe ushqim mahnitës.<br>
+                        <span>Duke filluar nga <strong>$749</strong></span>
+                    </p>
+                    <button type="button" class="card-btn" data-city="Tokyo">Shiko Oferta</button>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
 ?>
