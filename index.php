@@ -89,4 +89,17 @@ if ($old['from'] === '') {
         ];
 
         setcookie('preferred_city', $old['to'], time() + 60 * 60 * 24 * 30, '/');
+
+$_SESSION['popup_success'] = "
+    Rezervimi është bërë me sukses, <strong>" . e($old['name']) . "</strong>!<br><br>
+    Ju do të udhëtoni nga <strong>" . e($old['from']) . "</strong> drejt <strong>" . e($old['to']) . "</strong>
+    për <strong>" . e($old['passengers']) . "</strong> pasagjer(ë) më datën
+    <span style='white-space: nowrap;'><strong>" . e($old['depart']) . "</strong></span>" .
+    ($old['return'] !== ''
+        ? " dhe kthim më <span style='white-space: nowrap;'><strong>" . e($old['return']) . "</strong></span>."
+        : ".") .
+    "<br><br>
+    Ne do t'ju kontaktojmë së shpejti në <strong>" . e($old['email']) . "</strong>.<br>
+    Totali i rezervimit: <strong>$" . e((string)$total) . "</strong>.
+";
 ?>
