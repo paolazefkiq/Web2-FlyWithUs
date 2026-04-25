@@ -50,7 +50,7 @@ if ($old['email'] === '') {
     $errors['email'] = 'Email nuk është valid.';
 }
 
-if ($old['from'] === '') {
+    if ($old['from'] === '') {
         $errors['from'] = 'Zgjidh qytetin e nisjes.';
     }
 
@@ -73,7 +73,7 @@ if ($old['from'] === '') {
         $errors['passengers'] = 'Numri i pasagjerëve duhet të jetë nga 1 deri në 5.';
     }
 
-     if (!array_filter($errors)) {
+    if (!array_filter($errors)) {
         $basePrice = $flightMatrix[$old['from']][$old['to']];
         $total = $basePrice * $passengersNumber;
 
@@ -243,7 +243,7 @@ $hasErrors = !empty(array_filter($errors));
     </div>
                 </div>
 
-        <div class="booking-button-container">
+                 <div class="booking-button-container">
                     <button type="submit" class="btn-primary btn-full">Rezervo Tani</button>
                     <div id="livePrice">Çmimi: $0</div>
                 </div>
