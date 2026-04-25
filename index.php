@@ -30,4 +30,17 @@ $errors = [
     'return' => '',
     'passengers' => ''
 ];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach ($old as $key => $value) {
+        $old[$key] = trim($_POST[$key] ?? '');
+    }
+
+    $namePattern = '/^[A-Za-zÇçËëÁÉÍÓÚáéíóúÄÖÜäöü\s]{2,50}$/u';
+    $emailPattern = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
+
+    if ($old['name'] === '') {
+    $errors['name'] = 'Ju lutem plotësoni emrin.';
+} elseif (!preg_match($namePattern, $old['name'])) {
+    $errors['name'] = 'Emri duhet të ketë vetëm shkronja dhe së paku 2 karaktere.';
+}
 ?>
