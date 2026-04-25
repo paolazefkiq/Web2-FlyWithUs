@@ -204,4 +204,27 @@ $hasErrors = !empty(array_filter($errors));
         </option>
     <?php endforeach; ?>
 </select>
+
+         <?php if ($errors['to']): ?>
+    <div class="field-error"><?= e($errors['to']) ?></div>
+<?php endif; ?>
+</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+    <label for="depart">Data e Nisjes</label>
+    <input type="date" id="depart" name="depart" value="<?= e($old['depart']) ?>">
+    <?php if ($errors['depart']): ?>
+        <div class="field-error"><?= e($errors['depart']) ?></div>
+    <?php endif; ?>
+</div>
+
+                    <div class="form-group">
+    <label for="return">Data e Kthimit</label>
+    <input type="date" id="return" name="return" value="<?= e($old['return']) ?>">
+    <?php if ($errors['return']): ?>
+        <div class="field-error"><?= e($errors['return']) ?></div>
+    <?php endif; ?>
+</div>
 ?>
