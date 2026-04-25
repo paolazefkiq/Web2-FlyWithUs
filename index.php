@@ -72,4 +72,21 @@ if ($old['from'] === '') {
     if ($passengersNumber < 1 || $passengersNumber > 5) {
         $errors['passengers'] = 'Numri i pasagjerëve duhet të jetë nga 1 deri në 5.';
     }
+
+     if (!array_filter($errors)) {
+        $basePrice = $flightMatrix[$old['from']][$old['to']];
+        $total = $basePrice * $passengersNumber;
+
+        if ($old['return'] !== '') {
+            $total *= 2;
+        }
+
+        $_SESSION['last_booking'] = [
+            'name' => $old['name'],
+            'route' => $old['from'] . ' - ' . $old['to'],
+            'total' => $total,
+            'date' => $old['depart']
+        ];
+
+        setcookie('preferred_city', $old['to'], time() + 60 * 60 * 24 * 30, '/');
 ?>
