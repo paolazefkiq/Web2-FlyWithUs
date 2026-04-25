@@ -63,4 +63,13 @@ if ($old['from'] === '') {
     if ($old['depart'] === '') {
         $errors['depart'] = 'Data e nisjes është e detyrueshme.';
     }
+
+    if ($old['return'] !== '' && $old['depart'] !== '' && $old['return'] < $old['depart']) {
+        $errors['return'] = 'Data e kthimit nuk mund të jetë para nisjes.';
+    }
+
+    $passengersNumber = (int)$old['passengers'];
+    if ($passengersNumber < 1 || $passengersNumber > 5) {
+        $errors['passengers'] = 'Numri i pasagjerëve duhet të jetë nga 1 deri në 5.';
+    }
 ?>
