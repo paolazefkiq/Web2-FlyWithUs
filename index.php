@@ -307,4 +307,12 @@ $hasErrors = !empty(array_filter($errors));
         </div>
     </section>
 </main>
+
+<div id="successPopup" class="popup-overlay" style="<?= $popupSuccess ? 'display: flex;' : 'display: none;' ?>">
+    <div class="popup-box">
+        <h2>Rezervimi u krye me sukses!</h2>
+        <p id="popupMessage"><?= $popupSuccess ?></p>
+        <button id="closePopup" type="button">Mbylle</button>
+    </div>
+</div>
 ?>
