@@ -167,4 +167,25 @@ $hasErrors = !empty(array_filter($errors));
         <div class="field-error"><?= e($errors['name']) ?></div>
     <?php endif; ?>
 </div>
+
+         <div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" placeholder="filanfisteku@gmail.com" value="<?= e($old['email']) ?>">
+    <?php if ($errors['email']): ?>
+        <div class="field-error"><?= e($errors['email']) ?></div>
+    <?php endif; ?>
+</div>
+</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+    <label for="from">Nga</label>
+<select id="from" name="from">
+    <option value="">Zgjidh qytetin</option>
+    <?php foreach (array_keys($flightMatrix) as $fromCity): ?>
+        <option value="<?= e($fromCity) ?>" <?= $old['from'] === $fromCity ? 'selected' : '' ?>>
+            <?= e($fromCity) ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 ?>
