@@ -242,4 +242,24 @@ $hasErrors = !empty(array_filter($errors));
     <?php endif; ?>
 </div>
                 </div>
+
+        <div class="booking-button-container">
+                    <button type="submit" class="btn-primary btn-full">Rezervo Tani</button>
+                    <div id="livePrice">Çmimi: $0</div>
+                </div>
+            </form>
+
+            <p id="bookingSuccess" class="booking-success hidden"></p>
+        </div>
+
+        <div class="booking-info">
+            <h3>Pse të rezervoni me ne?</h3><br>
+            <ul class="booking-info">
+                <li>✔ Mbështetje 24/7 për klientët</li>
+                <li>✔ Pa tarifa të fshehura</li>
+                <li>✔ Ndryshime fleksibile për shumicën e biletave</li>
+                <li>✔ E besuar nga mijëra udhëtarë</li>
+            </ul>
+        </div>
+    </section>
 ?>
