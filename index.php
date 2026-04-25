@@ -43,4 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } elseif (!preg_match($namePattern, $old['name'])) {
     $errors['name'] = 'Emri duhet të ketë vetëm shkronja dhe së paku 2 karaktere.';
 }
+
+if ($old['email'] === '') {
+    $errors['email'] = 'Ju lutem plotësoni email-in.';
+} elseif (!preg_match($emailPattern, $old['email'])) {
+    $errors['email'] = 'Email nuk është valid.';
+}
 ?>
