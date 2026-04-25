@@ -315,4 +315,19 @@ $hasErrors = !empty(array_filter($errors));
         <button id="closePopup" type="button">Mbylle</button>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const hasErrors = <?= $hasErrors ? 'true' : 'false' ?>;
+
+    if (hasErrors) {
+        const bookingSection = document.getElementById("booking");
+        if (bookingSection) {
+            bookingSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
+});
+</script>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
 ?>
