@@ -119,4 +119,23 @@ $hasErrors = !empty(array_filter($errors));
         <a href="#booking" class="btn-primary">Rezervo Tani</a>
     </div>
 </header>
+
+<main>
+    <?php if ($flashSuccess): ?>
+        <div class="alert success"><?= e($flashSuccess) ?></div>
+    <?php endif; ?>
+
+    <?php if ($flashError): ?>
+        <div class="alert error"><?= e($flashError) ?></div>
+    <?php endif; ?>
+
+    <section class="info-strip">
+        <div>
+    <strong>Cookie preference:</strong>
+    <?php if ($preferredCity !== ''): ?>
+        Destinacioni juaj i fundit i ruajtur është <strong><?= e($preferredCity) ?></strong>.
+    <?php else: ?>
+        Nuk ka ende destinacion të ruajtur në cookie.
+    <?php endif; ?>
+</div>
 ?>
