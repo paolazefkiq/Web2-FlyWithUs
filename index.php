@@ -20,4 +20,14 @@ $old = [
     'return' => '',
     'passengers' => '1'
 ];
+
+$errors = [
+    'name' => '',
+    'email' => '',
+    'from' => '',
+    'to' => '',
+    'depart' => '',
+    'return' => '',
+    'passengers' => ''
+];
 ?>
