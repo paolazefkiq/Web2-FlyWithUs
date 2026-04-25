@@ -188,4 +188,20 @@ $hasErrors = !empty(array_filter($errors));
         </option>
     <?php endforeach; ?>
 </select>
+
+<?php if ($errors['from']): ?>
+        <div class="field-error"><?= e($errors['from']) ?></div>
+    <?php endif; ?>
+</div>
+
+                    <div class="form-group">
+    <label for="to">Deri në</label>
+<select id="to" name="to">
+    <option value="">Zgjidh qytetin</option>
+    <?php foreach ($destinations as $destination): ?>
+        <option value="<?= e($destination['city']) ?>" <?= $old['to'] === $destination['city'] ? 'selected' : '' ?>>
+            <?= e($destination['city']) ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 ?>
