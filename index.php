@@ -138,4 +138,16 @@ $hasErrors = !empty(array_filter($errors));
         Nuk ka ende destinacion të ruajtur në cookie.
     <?php endif; ?>
 </div>
+
+             <?php if (isLoggedIn()): ?>
+            <div><strong>Session:</strong> <?= e(currentUser()->getGreeting()) ?></div>
+        <?php else: ?>
+            <div>
+    <strong>Demo login:</strong>
+    customer@flywithus.com ose customer1 / Customer123
+    ose
+    admin@flywithus.com ose admin1 / Admin123
+            </div>
+        <?php endif; ?>
+    </section>
 ?>
