@@ -49,4 +49,18 @@ if ($old['email'] === '') {
 } elseif (!preg_match($emailPattern, $old['email'])) {
     $errors['email'] = 'Email nuk është valid.';
 }
+
+if ($old['from'] === '') {
+        $errors['from'] = 'Zgjidh qytetin e nisjes.';
+    }
+
+    if ($old['to'] === '') {
+        $errors['to'] = 'Zgjidh destinacionin.';
+    } elseif ($old['from'] !== '' && (!isset($flightMatrix[$old['from']]) || !isset($flightMatrix[$old['from']][$old['to']]))) {
+        $errors['to'] = 'Zgjedhja e fluturimit nuk është valide.';
+    }
+
+    if ($old['depart'] === '') {
+        $errors['depart'] = 'Data e nisjes është e detyrueshme.';
+    }
 ?>
