@@ -150,4 +150,21 @@ $hasErrors = !empty(array_filter($errors));
             </div>
         <?php endif; ?>
     </section>
+
+    <section id="booking" class="booking-section">
+        <div class="booking-container">
+            <h2>Rezervo Fluturimin Tuaj</h2>
+            <p class="section-subtitle">
+                Plotëso detajet më poshtë dhe ne do të përgatisim ofertën më të mirë për ju.
+            </p>
+
+            <form id="bookingForm" class="booking-form" method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+    <label for="name">Emri Juaj</label>
+    <input type="text" id="name" name="name" placeholder="Filan Fisteku" value="<?= e($old['name']) ?>">
+    <?php if ($errors['name']): ?>
+        <div class="field-error"><?= e($errors['name']) ?></div>
+    <?php endif; ?>
+</div>
 ?>
