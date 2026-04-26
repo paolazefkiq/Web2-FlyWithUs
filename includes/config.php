@@ -41,7 +41,7 @@ $faqItems = [
 $GLOBALS['site_name'] = 'Fly With Us';
 $GLOBALS['support_email'] = 'support@flywithus.com';
 $GLOBALS['support_phone'] = '+383 49 123 456';
-$GLOBALS['base_url'] = '/FlyWithUsPhase1';
+$GLOBALS['base_url'] = '/Web2-FlyWithUs';
 
 $destinations = [
     ['city' => 'New York', 'price' => 399, 'type' => 'Long Haul'],
