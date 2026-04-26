@@ -11,10 +11,10 @@ Në Fazën 1, aplikacioni është zhvilluar duke përdorur PHP pa databazë, ku 
 2. Vendosni folderin e projektit në:
    `C:\xampp\htdocs\`
 3. Sigurohuni që folderi quhet:
-   `FlyWithUsPhase1`
+   `Web2-FlyWithUs`
 4. Startoni Apache në XAMPP
 5. Hapni browser dhe shkoni te:
-   `http://localhost/FlyWithUsPhase1`
+   `http://localhost/Web2-FlyWithUs`
 
 ## Login
 
