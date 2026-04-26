@@ -14,6 +14,7 @@ $flashSuccess = getFlash('flash_success');
     <div class="alert success"><?= e($flashSuccess) ?></div>
 <?php endif; ?>
     <div class="dashboard-card">
+        <h3>Informatat për përdoruesin </h3>
         <p><strong>Përdoruesi:</strong> <?= e($user->getName()) ?></p>
         <p><strong>Roli:</strong> <?= e($user->getRole()) ?></p>
         <p><strong>Mesazhi:</strong> <?= e($user->getDashboardMessage()) ?></p>
