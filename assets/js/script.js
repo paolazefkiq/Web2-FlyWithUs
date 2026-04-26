@@ -67,6 +67,10 @@ if (fromInput && toInput && passengersInput && returnInput) {
     });
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    updateLivePrice();
+});
+
 const successPopup = document.getElementById("successPopup");
 const closeBtn = document.getElementById("closePopup");
 
