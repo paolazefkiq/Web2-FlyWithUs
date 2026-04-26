@@ -29,5 +29,24 @@ class User
 {
     $this->name = $name;
 }
+public function setEmail(string $email): void
+{
+    $this->email = $email;
+}
+
+public function setUsername(string $username): void
+{
+    $this->username = $username;
+}
+
+    public function setFavoriteDestination(string $favoriteDestination): void
+    {
+        $this->favoriteDestination = $favoriteDestination;
+    }
+
+    public function getGreeting(): string
+    {
+        return 'Mirë se erdhe, ' . $this->name . '!';
+    }
 }
 ?>
