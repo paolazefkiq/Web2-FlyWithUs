@@ -198,7 +198,7 @@ $hasErrors = !empty(array_filter($errors));
     <label for="to">Deri në</label>
 <select id="to" name="to">
     <option value="">Zgjidh qytetin</option>
-    <?php foreach ($destinations as $destination): ?>
+    <?php foreach ($sortedDestinations as $destination): ?>
         <option value="<?= e($destination['city']) ?>" <?= $old['to'] === $destination['city'] ? 'selected' : '' ?>>
             <?= e($destination['city']) ?>
         </option>
