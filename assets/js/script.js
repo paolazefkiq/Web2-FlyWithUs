@@ -10,14 +10,6 @@ if (yearSpan) {
     yearSpan.textContent = new Date().getFullYear();
 }
 
-const prices = {
-    "Prishtina": {"New York":399,"Paris":299,"Tokyo":749,"Dubai":499,"Berlin":279,"London":350,"Rome":320},
-    "Tirana": {"New York":420,"Paris":310,"Tokyo":770,"Dubai":520,"Berlin":290,"London":360,"Rome":330},
-    "Shkup": {"New York":430,"Paris":320,"Tokyo":780,"Dubai":530,"Berlin":295,"London":370,"Rome":335},
-    "Podgorica": {"New York":450,"Paris":340,"Tokyo":800,"Dubai":550,"Berlin":310,"London":380,"Rome":350},
-    "Sarajevo": {"New York":440,"Paris":330,"Tokyo":790,"Dubai":540,"Berlin":305,"London":375,"Rome":345}
-};
-
 const bookingForm = document.getElementById("bookingForm");
 const fromInput = document.getElementById("from");
 const toInput = document.getElementById("to");

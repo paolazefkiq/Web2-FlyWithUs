@@ -1406,3 +1406,11 @@ body { min-height: 100vh; }
     border: 1px solid #d62828 !important;
     box-shadow: 0 0 0 2px rgba(214, 40, 40, 0.08);
 }
+
+.dashboard-card h3 {
+    margin-bottom: 12px;
+}
+
+.dashboard-card p {
+    margin: 6px 0;
+}

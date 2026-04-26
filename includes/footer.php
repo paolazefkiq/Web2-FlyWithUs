@@ -5,6 +5,11 @@
     <a href="<?= $GLOBALS['base_url'] ?>/pages/faq.php">FAQ</a>
 </p>
 </footer>
+
+<script>
+    const prices = <?= json_encode($flightMatrix ?? []) ?>;
+</script>
 <script src="<?= $GLOBALS['base_url'] ?>/assets/js/script.js"></script>
+
 </body>
 </html>

@@ -202,29 +202,4 @@ require_once __DIR__ . '/../includes/nav.php';
     </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const contactPopup = document.getElementById("contactPopup");
-    const contactClose = document.getElementById("contactClose");
-
-    if (contactPopup && contactClose) {
-        contactClose.addEventListener("click", () => {
-            contactPopup.style.display = "none";
-        });
-
-        contactPopup.addEventListener("click", (e) => {
-            if (e.target === contactPopup) {
-                contactPopup.style.display = "none";
-            }
-        });
-
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") {
-                contactPopup.style.display = "none";
-            }
-        });
-    }
-});
-</script>
-
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
