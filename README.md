@@ -7,6 +7,42 @@ Ky projekt është realizuar në kuadër të lëndës “Programimi në ueb nga 
 Në Fazën 1, aplikacioni është zhvilluar duke përdorur PHP pa databazë, ku të gjitha të dhënat janë të simuluara (dummy). Projekti demonstron përdorimin e koncepteve bazë të PHP-së, programimit të orientuar në objekte, validimit server-side, si dhe menaxhimit të sesioneve dhe cookies.
 
 ## Struktura e projektit
+
+Projekti është i organizuar në mënyrë të qartë në folderë sipas funksionalitetit:
+
+* `index.php` – faqja kryesore me formën e rezervimit
+* `login.php` – forma për kyçje
+* `logout.php` – dalje nga sistemi
+
+Folderët kryesorë:
+
+* `includes/`
+
+  * `config.php` – konfigurimi dhe të dhënat dummy
+  * `header.php` – pjesa e sipërme e faqes
+  * `nav.php` – navigimi
+  * `footer.php` – pjesa e poshtme e faqes
+
+* `classes/`
+
+  * `User.php` – klasa bazë
+  * `Admin.php` – klasa për administratorin
+  * `Customer.php` – klasa për përdoruesin e zakonshëm
+
+* `pages/`
+
+  * `about.php`
+  * `contact.php`
+  * `faq.php`
+  * `admin-dashboard.php`
+  * `customer-dashboard.php`
+
+* `assets/`
+
+  * CSS, JavaScript dhe imazhe
+
+## Ekzekutimi i projektit
+
 1. Instaloni dhe hapni XAMPP
 2. Vendosni folderin e projektit në:
    `C:\xampp\htdocs\`
