@@ -79,3 +79,41 @@ try {
         $destinationId = (int)$existingRoute['destination_id'];
         $existingDestinationIdsByOrigin[$originId][$destinationId] = true;
     }
+
+    foreach ($originCities as $originCity) {
+        $originId = (int)$originCity['id'];
+        $missingDestinations = [];
+
+        foreach ($destinations as $destination) {
+            $destinationId = (int)$destination['id'];
+
+            if (!isset($existingDestinationIdsByOrigin[$originId][$destinationId])) {
+                $missingDestinations[] = [
+                    'id' => $destinationId,
+                    'city' => $destination['city'],
+                ];
+            }
+        }
+
+        if ($missingDestinations) {
+            $availableOriginCities[] = $originCity;
+            $availableDestinationsByOrigin[(string)$originId] = $missingDestinations;
+        }
+    }
+
+    $destinationIds = array_map(static fn(array $destination): int => (int)$destination['id'], $destinations);
+
+    if ($prefillDestinationId > 0 && !$editingId && $_SERVER['REQUEST_METHOD'] !== 'POST' && in_array($prefillDestinationId, $destinationIds, true)) {
+        $formData['destination_id'] = (string)$prefillDestinationId;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? '';
+
+        if ($action === 'delete') {
+            $routeId = (int)($_POST['route_id'] ?? 0);
+
+            if ($routeId > 0) {
+                $bookingCountStatement = $pdo->prepare('SELECT COUNT(*) FROM bookings WHERE route_id = :route_id');
+                $bookingCountStatement->execute(['route_id' => $routeId]);
+                $bookingCount = (int)$bookingCountStatement->fetchColumn();
