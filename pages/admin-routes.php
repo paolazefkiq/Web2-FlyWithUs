@@ -334,4 +334,77 @@ require_once __DIR__ . '/../includes/nav.php';
                         }
                         ?>
                         <?php foreach ($destinationOptions as $destination): ?>
-                            
+                            <option value="<?= e((string)$destination['id']) ?>" <?= $formData['destination_id'] === (string)$destination['id'] ? 'selected' : '' ?>>
+                                <?= e($destination['city']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php if (!$editingId): ?>
+                        <p class="form-help">Pas zgjedhjes se nisjes, shfaqen vetem destinacionet qe ende nuk kane rruge te ruajtur.</p>
+                    <?php endif; ?>
+                    <?php if ($errors['destination_id']): ?><div class="field-error"><?= e($errors['destination_id']) ?></div><?php endif; ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="route-price">Cmimi</label>
+                    <input id="route-price" type="number" step="0.01" min="0" name="price" value="<?= e($formData['price']) ?>">
+                    <?php if ($errors['price']): ?><div class="field-error"><?= e($errors['price']) ?></div><?php endif; ?>
+                </div>
+            </div>
+
+            <div class="crud-actions">
+                <button type="submit" class="btn-primary"><?= $editingId > 0 ? 'Ruaj ndryshimet' : 'Shto rrugen' ?></button>
+                <?php if ($editingId > 0): ?>
+                    <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-routes.php" class="btn-secondary">Anulo</a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </section>
+
+    <section class="dashboard-card">
+        <div class="dashboard-section-header">
+            <div>
+                <h3>Lista e rrugeve</h3>
+                <p class="dashboard-section-subtitle">Rruget e ruajtura me cmimet dhe perdorimin e tyre.</p>
+            </div>
+        </div>
+
+        <?php if (!$routes): ?>
+            <p class="table-empty">Nuk ka ende rruge te ruajtura.</p>
+        <?php else: ?>
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nisja</th>
+                        <th>Destinacioni</th>
+                        <th>Cmimi</th>
+                        <th>Rezervime</th>
+                        <th>Veprime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($routes as $route): ?>
+                        <tr>
+                            <td><?= e((string)$route['id']) ?></td>
+                            <td><?= e($route['origin_city']) ?></td>
+                            <td><?= e($route['destination_city']) ?></td>
+                            <td>$<?= e(number_format((float)$route['price'], 2)) ?></td>
+                            <td><?= e((string)$route['bookings_count']) ?></td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-routes.php?edit=<?= e((string)$route['id']) ?>" class="btn-secondary btn-small">Edito</a>
+                                    <form method="POST" onsubmit="return confirm('A jeni i sigurt qe deshironi ta fshini kete rruge?');">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="route_id" value="<?= e((string)$route['id']) ?>">
+                                        <button type="submit" class="btn-danger btn-small">Fshi</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </section>
+</main>
