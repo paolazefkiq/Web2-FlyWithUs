@@ -117,3 +117,48 @@ try {
                 $bookingCountStatement = $pdo->prepare('SELECT COUNT(*) FROM bookings WHERE route_id = :route_id');
                 $bookingCountStatement->execute(['route_id' => $routeId]);
                 $bookingCount = (int)$bookingCountStatement->fetchColumn();
+
+                if ($bookingCount > 0) {
+                    setFlash('flash_error', 'Kjo rruge ka rezervime te lidhura dhe nuk mund te fshihet.');
+                } else {
+                    $deleteStatement = $pdo->prepare('DELETE FROM routes WHERE id = :id');
+                    $deleteStatement->execute(['id' => $routeId]);
+                    setFlash('flash_success', 'Rruga u fshi me sukses.');
+                }
+            }
+
+            redirect($GLOBALS['base_url'] . '/pages/admin-routes.php');
+        }
+
+        $formData = [
+            'origin_city_id' => trim($_POST['origin_city_id'] ?? ''),
+            'destination_id' => trim($_POST['destination_id'] ?? ''),
+            'price' => trim($_POST['price'] ?? ''),
+        ];
+        $errors = $validateRouteForm($formData);
+
+        if (!array_filter($errors)) {
+            $selectedOriginCityId = (int)$formData['origin_city_id'];
+            $selectedDestinationId = (int)$formData['destination_id'];
+            $currentRouteId = $action === 'update' ? (int)($_POST['route_id'] ?? 0) : 0;
+
+            $existingRouteSql = '
+                SELECT id, price
+                FROM routes
+                WHERE origin_city_id = :origin_city_id
+                  AND destination_id = :destination_id';
+            $existingRouteParams = [
+                'origin_city_id' => $selectedOriginCityId,
+                'destination_id' => $selectedDestinationId,
+            ];
+
+            if ($currentRouteId > 0) {
+                $existingRouteSql .= ' AND id <> :current_route_id';
+                $existingRouteParams['current_route_id'] = $currentRouteId;
+            }
+
+            $existingRouteSql .= ' LIMIT 1';
+
+            $existingRouteStatement = $pdo->prepare($existingRouteSql);
+            $existingRouteStatement->execute($existingRouteParams);
+            $existingRoute = $existingRouteStatement->fetch();
