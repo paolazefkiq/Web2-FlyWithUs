@@ -162,3 +162,45 @@ try {
             $existingRouteStatement = $pdo->prepare($existingRouteSql);
             $existingRouteStatement->execute($existingRouteParams);
             $existingRoute = $existingRouteStatement->fetch();
+        
+         if ($existingRoute) {
+                $currentPrice = '$' . number_format((float)$existingRoute['price'], 2);
+                $formError = 'Kjo rruge ekziston tashme. Cmimi aktual: ' . $currentPrice . '. Per perditsim, perdorni butonin "Edito" ne listen me poshte.';
+            } else {
+                try {
+                    if ($action === 'update') {
+                        $routeId = (int)($_POST['route_id'] ?? 0);
+                        $statement = $pdo->prepare(
+                            'UPDATE routes
+                             SET origin_city_id = :origin_city_id,
+                                 destination_id = :destination_id,
+                                 price = :price
+                             WHERE id = :id'
+                        );
+                        $statement->execute([
+                            'origin_city_id' => $selectedOriginCityId,
+                            'destination_id' => $selectedDestinationId,
+                            'price' => $formData['price'],
+                            'id' => $routeId,
+                        ]);
+                        setFlash('flash_success', 'Rruga u perditesua me sukses.');
+                    } else {
+                        $statement = $pdo->prepare(
+                            'INSERT INTO routes (origin_city_id, destination_id, price)
+                             VALUES (:origin_city_id, :destination_id, :price)'
+                        );
+                        $statement->execute([
+                            'origin_city_id' => $selectedOriginCityId,
+                            'destination_id' => $selectedDestinationId,
+                            'price' => $formData['price'],
+                        ]);
+                        setFlash('flash_success', 'Rruga u shtua me sukses.');
+                    }
+
+                    redirect($GLOBALS['base_url'] . '/pages/admin-routes.php');
+                } catch (PDOException $exception) {
+                    $formError = 'Rruga nuk u ruajt. Ju lutemi kontrolloni te dhenat dhe provoni perseri.';
+                }
+            }
+        }
+    }
