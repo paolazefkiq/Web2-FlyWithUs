@@ -108,3 +108,22 @@ $prepareDestinationImageUpload = static function (?array $file, string $city) us
         'absolute_path' => $absolutePath,
     ];
 };
+
+$deleteManagedDestinationImage = static function (?string $relativePath) use ($uploadRelativeDirectory): void {
+    if (!$relativePath) {
+        return;
+    }
+
+    $normalizedPath = ltrim(str_replace('\\', '/', $relativePath), '/');
+    $managedPrefix = rtrim($uploadRelativeDirectory, '/') . '/';
+
+    if (strpos($normalizedPath, $managedPrefix) !== 0) {
+        return;
+    }
+
+    $absolutePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $normalizedPath);
+
+    if (is_file($absolutePath)) {
+        @unlink($absolutePath);
+    }
+};
