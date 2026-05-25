@@ -287,3 +287,51 @@ require_once __DIR__ . '/../includes/nav.php';
                 </p>
             </div>
         </div>
+     <?php if (!$editingId && !$availableOriginCities): ?>
+            <div class="alert info">
+                Te gjitha rruget e mundshme jane tashme te ruajtura. Per ndryshim cmimi, perdorni butonin "Edito" ne listen me poshte ose shtoni nje destinacion apo qytet te ri nisjeje.
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" class="crud-form" novalidate>
+            <input type="hidden" name="action" value="<?= $editingId > 0 ? 'update' : 'create' ?>">
+            <?php if ($editingId > 0): ?>
+                <input type="hidden" name="route_id" value="<?= e((string)$editingId) ?>">
+            <?php endif; ?>
+
+            <div class="crud-grid crud-grid--three">
+                <div class="form-group">
+                    <label for="route-origin">Qyteti i nisjes</label>
+                    <select id="route-origin" name="origin_city_id">
+                        <option value="">Zgjidh qytetin</option>
+                        <?php foreach ($editingId > 0 ? $originCities : $availableOriginCities as $originCity): ?>
+                            <option value="<?= e((string)$originCity['id']) ?>" <?= $formData['origin_city_id'] === (string)$originCity['id'] ? 'selected' : '' ?>>
+                                <?= e($originCity['city']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php if ($errors['origin_city_id']): ?><div class="field-error"><?= e($errors['origin_city_id']) ?></div><?php endif; ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="route-destination">Destinacioni</label>
+                    <select id="route-destination" name="destination_id">
+                        <option value="">Zgjidh destinacionin</option>
+                        <?php
+                        $destinationOptions = $destinations;
+
+                        if ($editingId === 0 && $formData['origin_city_id'] !== '' && isset($availableDestinationsByOrigin[$formData['origin_city_id']])) {
+                            $destinationOptions = $availableDestinationsByOrigin[$formData['origin_city_id']];
+                        } elseif ($editingId === 0 && $prefillDestinationId > 0 && isset($destinationLabelsById[$prefillDestinationId])) {
+                            $destinationOptions = [
+                                [
+                                    'id' => $prefillDestinationId,
+                                    'city' => $destinationLabelsById[$prefillDestinationId],
+                                ],
+                            ];
+                        } elseif ($editingId === 0) {
+                            $destinationOptions = [];
+                        }
+                        ?>
+                        <?php foreach ($destinationOptions as $destination): ?>
+                            
