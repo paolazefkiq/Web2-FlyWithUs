@@ -408,3 +408,53 @@ require_once __DIR__ . '/../includes/nav.php';
         <?php endif; ?>
     </section>
 </main>
+<?php if ($editingId === 0): ?>
+    <script>
+        window.availableDestinationsByOrigin = <?= json_encode($availableDestinationsByOrigin, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const originSelect = document.getElementById('route-origin');
+            const destinationSelect = document.getElementById('route-destination');
+            const availableDestinations = window.availableDestinationsByOrigin || {};
+            const selectedDestinationId = <?= json_encode($formData['destination_id'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
+
+            if (!originSelect || !destinationSelect) {
+                return;
+            }
+
+            const renderDestinationOptions = function () {
+                const originId = originSelect.value;
+                const destinations = availableDestinations[originId] || [];
+                const currentValue = destinationSelect.value;
+
+                destinationSelect.innerHTML = '';
+
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = 'Zgjidh destinacionin';
+                destinationSelect.appendChild(placeholder);
+
+                destinations.forEach(function (destination) {
+                    const option = document.createElement('option');
+                    option.value = String(destination.id);
+                    option.textContent = destination.city;
+                    destinationSelect.appendChild(option);
+                });
+
+                if (currentValue && destinations.some(function (destination) { return String(destination.id) === currentValue; })) {
+                    destinationSelect.value = currentValue;
+                } else if (
+                    selectedDestinationId &&
+                    destinations.some(function (destination) { return String(destination.id) === String(selectedDestinationId); })
+                ) {
+                    destinationSelect.value = String(selectedDestinationId);
+                }
+            };
+
+            originSelect.addEventListener('change', renderDestinationOptions);
+            renderDestinationOptions();
+        });
+    </script>
+<?php endif; ?>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
