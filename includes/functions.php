@@ -174,3 +174,30 @@ function buildDestinationImagePath(array $destination): string
 
     return 'assets/img/airplane-bg.jpg';
 }
+
+function validateLoginValue(string $login): string
+{
+    $emailPattern = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
+    $usernamePattern = '/^[A-Za-z0-9_]{4,20}$/';
+
+    if ($login === '') {
+        return 'Ju lutem plotësoni email-in ose username-in.';
+    }
+
+    if (!preg_match($emailPattern, $login) && !preg_match($usernamePattern, $login)) {
+        return 'Login duhet të jetë email i vlefshëm ose username me 4-20 karaktere.';
+    }
+
+    return '';
+}
+
+function validatePassengers(string $passengers): string
+{
+    $passengersNumber = (int)$passengers;
+
+    if ($passengersNumber < 1 || $passengersNumber > 5) {
+        return 'Numri i pasagjerëve duhet të jetë nga 1 deri në 5.';
+    }
+
+    return '';
+}
