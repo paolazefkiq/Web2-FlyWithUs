@@ -48,3 +48,34 @@ $validateRouteForm = static function (array $data): array {
 
     return $errors;
 };
+try {
+    $pdo = getPDO();
+
+    $originCitiesStatement = $pdo->prepare('SELECT id, city FROM origin_cities ORDER BY city ASC');
+    $originCitiesStatement->execute();
+    $originCities = $originCitiesStatement->fetchAll();
+
+    $destinationsStatement = $pdo->prepare('SELECT id, city FROM destinations ORDER BY city ASC');
+    $destinationsStatement->execute();
+    $destinations = $destinationsStatement->fetchAll();
+
+    $existingRoutesStatement = $pdo->prepare(
+        'SELECT origin_city_id, destination_id
+         FROM routes
+         ORDER BY origin_city_id ASC, destination_id ASC'
+    );
+    $existingRoutesStatement->execute();
+    $existingRoutes = $existingRoutesStatement->fetchAll();
+
+    $existingDestinationIdsByOrigin = [];
+    $destinationLabelsById = [];
+
+    foreach ($destinations as $destination) {
+        $destinationLabelsById[(int)$destination['id']] = $destination['city'];
+    }
+
+    foreach ($existingRoutes as $existingRoute) {
+        $originId = (int)$existingRoute['origin_city_id'];
+        $destinationId = (int)$existingRoute['destination_id'];
+        $existingDestinationIdsByOrigin[$originId][$destinationId] = true;
+    }
