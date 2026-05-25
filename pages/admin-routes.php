@@ -48,6 +48,7 @@ $validateRouteForm = static function (array $data): array {
 
     return $errors;
 };
+
 try {
     $pdo = getPDO();
 
@@ -162,8 +163,8 @@ try {
             $existingRouteStatement = $pdo->prepare($existingRouteSql);
             $existingRouteStatement->execute($existingRouteParams);
             $existingRoute = $existingRouteStatement->fetch();
-        
-         if ($existingRoute) {
+
+            if ($existingRoute) {
                 $currentPrice = '$' . number_format((float)$existingRoute['price'], 2);
                 $formError = 'Kjo rruge ekziston tashme. Cmimi aktual: ' . $currentPrice . '. Per perditsim, perdorni butonin "Edito" ne listen me poshte.';
             } else {
@@ -204,7 +205,8 @@ try {
             }
         }
     }
-     if ($editingId > 0 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+    if ($editingId > 0 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
         $editStatement = $pdo->prepare(
             'SELECT id, origin_city_id, destination_id, price
              FROM routes
@@ -245,6 +247,7 @@ try {
 } catch (PDOException $exception) {
     $formError = 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.';
 }
+
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/nav.php';
 ?>
@@ -287,7 +290,8 @@ require_once __DIR__ . '/../includes/nav.php';
                 </p>
             </div>
         </div>
-     <?php if (!$editingId && !$availableOriginCities): ?>
+
+        <?php if (!$editingId && !$availableOriginCities): ?>
             <div class="alert info">
                 Te gjitha rruget e mundshme jane tashme te ruajtura. Per ndryshim cmimi, perdorni butonin "Edito" ne listen me poshte ose shtoni nje destinacion apo qytet te ri nisjeje.
             </div>
@@ -408,6 +412,7 @@ require_once __DIR__ . '/../includes/nav.php';
         <?php endif; ?>
     </section>
 </main>
+
 <?php if ($editingId === 0): ?>
     <script>
         window.availableDestinationsByOrigin = <?= json_encode($availableDestinationsByOrigin, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
