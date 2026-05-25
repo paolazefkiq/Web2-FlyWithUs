@@ -31,3 +31,20 @@ function sanitizeInternalRedirect(string $path): string
 
     return $path;
 }
+
+function setFlash(string $key, string $message): void
+{
+    $_SESSION[$key] = $message;
+}
+
+function getFlash(string $key): ?string
+{
+    if (!isset($_SESSION[$key])) {
+        return null;
+    }
+
+    $message = $_SESSION[$key];
+    unset($_SESSION[$key]);
+
+    return $message;
+}
