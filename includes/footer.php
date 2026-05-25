@@ -1,13 +1,15 @@
 <footer class="main-footer">
-    <p>© <span id="year"></span> Fly With Us. Të gjitha të drejtat e rezervuara.</p>
+    <p>&copy; <span id="year"></span> Fly With Us. Te gjitha te drejtat e rezervuara.</p>
     <p class="sub-footer">
-    <a href="<?= $GLOBALS['base_url'] ?>/pages/contact.php">Kontakti</a> |
-    <a href="<?= $GLOBALS['base_url'] ?>/pages/faq.php">FAQ</a>
-</p>
+        <a href="<?= $GLOBALS['base_url'] ?>/pages/contact.php">Kontakti</a> |
+        <a href="<?= $GLOBALS['base_url'] ?>/pages/faq.php">FAQ</a>
+    </p>
 </footer>
 
 <script>
-    const prices = <?= json_encode($flightMatrix ?? []) ?>;
+    window.appBaseUrl = <?= json_encode($GLOBALS['base_url'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
+    window.bookingPrices = <?= json_encode($bookingPrices ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
+    window.bookingDestinations = <?= json_encode($bookingDestinations ?? [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
 </script>
 <script src="<?= $GLOBALS['base_url'] ?>/assets/js/script.js"></script>
 
