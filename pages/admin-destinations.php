@@ -127,3 +127,45 @@ $deleteManagedDestinationImage = static function (?string $relativePath) use ($u
         @unlink($absolutePath);
     }
 };
+
+try {
+    $pdo = getPDO();
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? '';
+
+        if ($action === 'delete') {
+            $destinationId = (int)($_POST['destination_id'] ?? 0);
+
+            if ($destinationId > 0) {
+                $destinationImageStatement = $pdo->prepare(
+                    'SELECT image_path
+                     FROM destinations
+                     WHERE id = :id
+                     LIMIT 1'
+                );
+                $destinationImageStatement->execute(['id' => $destinationId]);
+                $destinationRow = $destinationImageStatement->fetch();
+
+                $bookingCountStatement = $pdo->prepare(
+                    'SELECT COUNT(*)
+                     FROM bookings b
+                     INNER JOIN routes r ON r.id = b.route_id
+                     WHERE r.destination_id = :destination_id'
+                );
+                $bookingCountStatement->execute(['destination_id' => $destinationId]);
+                $bookingCount = (int)$bookingCountStatement->fetchColumn();
+
+                if ($bookingCount > 0) {
+                    setFlash('flash_error', 'Ky destinacion ka rezervime të lidhura dhe nuk mund të fshihet.');
+                } else {
+                    $deleteStatement = $pdo->prepare('DELETE FROM destinations WHERE id = :id');
+                    $deleteStatement->execute(['id' => $destinationId]);
+                    $deleteManagedDestinationImage($destinationRow['image_path'] ?? null);
+                    setFlash('flash_success', 'Destinacioni dhe rrugët e lidhura u fshinë me sukses.');
+                }
+            }
+
+        }
+    }
+}
