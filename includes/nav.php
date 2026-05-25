@@ -1,4 +1,25 @@
-<?php $user = currentUser(); ?>
+<?php
+$user = currentUser();
+$currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?? '';
+$basePath = parse_url($GLOBALS['base_url'], PHP_URL_PATH) ?? '';
+
+if ($basePath !== '' && str_starts_with($currentPath, $basePath)) {
+    $currentPath = substr($currentPath, strlen($basePath));
+}
+
+if ($currentPath === '') {
+    $currentPath = '/index.php';
+}
+
+$isActivePath = static function (array $paths) use ($currentPath): bool {
+    return in_array($currentPath, $paths, true);
+};
+
+$navClass = static function (array $paths) use ($isActivePath): string {
+    return $isActivePath($paths) ? 'active' : '';
+};
+?>
+
 <nav class="navbar">
     <div class="logo">
         <img src="<?= $GLOBALS['base_url'] ?>/assets/img/airplane-logo.png" alt="Airplane Logo" class="nav-logo">
@@ -12,22 +33,21 @@
     </div>
 
     <div class="nav-links" id="navLinks">
-        <a href="<?= $GLOBALS['base_url'] ?>/index.php">Ballina</a>
-        <a href="<?= $GLOBALS['base_url'] ?>/index.php#booking">Rezervo</a>
-        <a href="<?= $GLOBALS['base_url'] ?>/index.php#destinations">Destinacionet</a>
-        <a href="<?= $GLOBALS['base_url'] ?>/pages/about.php">Rreth Nesh</a>
-        <a href="<?= $GLOBALS['base_url'] ?>/pages/faq.php">FAQ</a>
-        <a href="<?= $GLOBALS['base_url'] ?>/pages/contact.php">Kontakti</a>
+        <a class="<?= $navClass(['/index.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/index.php">Ballina</a>
+        <a class="<?= $navClass(['/pages/booking.php', '/booking.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/booking.php">Rezervo</a>
+        <a class="<?= $navClass(['/pages/about.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/about.php">Rreth Nesh</a>
+        <a class="<?= $navClass(['/pages/faq.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/faq.php">FAQ</a>
+        <a class="<?= $navClass(['/pages/contact.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/contact.php">Kontakti</a>
 
         <?php if ($user): ?>
             <?php if ($user->getRole() === 'admin'): ?>
-                <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-dashboard.php">Admin Dashboard</a>
+                <a class="<?= $navClass(['/pages/admin-dashboard.php', '/pages/admin-destinations.php', '/pages/admin-origin-cities.php', '/pages/admin-routes.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/admin-dashboard.php">Admin Dashboard</a>
             <?php else: ?>
-                <a href="<?= $GLOBALS['base_url'] ?>/pages/customer-dashboard.php">Customer Dashboard</a>
+                <a class="<?= $navClass(['/pages/customer-dashboard.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/customer-dashboard.php#reservations">Dashboard</a>
             <?php endif; ?>
             <a href="<?= $GLOBALS['base_url'] ?>/logout.php">Logout</a>
         <?php else: ?>
-            <a href="<?= $GLOBALS['base_url'] ?>/login.php">Login</a>
+            <a class="<?= $navClass(['/login.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/login.php">Login</a>
         <?php endif; ?>
     </div>
 </nav>
