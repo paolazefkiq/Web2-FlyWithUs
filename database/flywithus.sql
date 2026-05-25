@@ -97,3 +97,18 @@ CREATE TABLE `contact_messages` (
         ON DELETE SET NULL
         ON UPDATE CASCADE
 )
+
+INSERT INTO `users` (`id`, `full_name`, `email`, `username`, `password_hash`, `role`, `last_login_at`) VALUES
+    (1, 'Customer FlyWithUs', 'customer@flywithus.com', 'customer1', '$2y$10$oLuVr7W1SExGgCWrjzUKMO8kjbYxcmj.Gjc.MHbmQXjvJBPXMAovi', 'customer', NULL),
+    (2, 'Admin FlyWithUs', 'admin@flywithus.com', 'admin1', '$2y$10$dXG6QdkjVOjaDwvPunblL.DuUv6TW/jXWPdyoqQkoz6BzDQHbRH..', 'admin', NULL),
+    (3, 'Customer 2', 'customer2@flywithus.com', 'customer2', '$2y$10$Y/AvwuCxslc6IwKIOht0muR/UCNrTbnX8A5b7K.Ak7whX1wYNPfcC', 'customer', NULL);
+
+INSERT INTO `destinations` (`id`, `city`, `country`, `description`, `image_path`) VALUES
+    (1, 'New York', 'USA', 'Qytet ikonik për udhëtime, kulturë dhe atraksione të njohura botërore.', 'assets/img/newyork.jpg'),
+    (2, 'Paris', 'France', 'Destinacion romantik me muze, ushqim të shkëlqyer dhe monumente të famshme.', 'assets/img/paris.jpg'),
+    (3, 'Tokyo', 'Japan', 'Përzierje unike mes traditës dhe teknologjisë moderne.', 'assets/img/tokyo.jpg'),
+    (4, 'Dubai', 'United Arab Emirates', 'Qytet modern me luks, plazhe dhe qendra të mëdha tregtare.', NULL),
+    (5, 'Berlin', 'Germany', 'Qytet historik me art, kulturë dhe jetë të gjallë urbane.', NULL),
+    (6, 'London', 'United Kingdom', 'Metropol i madh me muze, teatër dhe destinacione turistike të njohura.', NULL),
+    (7, 'Rome', 'Italy', 'Qytet klasik me histori, arkitekturë dhe kuzhinë tradicionale.', NULL),
+    (8, 'Barcelona', 'Spain', 'Qytet mesdhetar me arkitekturë ikonike, plazhe dhe jetë të gjallë urbane.', 'assets/img/barcelona.jpg');
