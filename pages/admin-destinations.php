@@ -166,6 +166,43 @@ try {
                 }
             }
 
+            redirect($GLOBALS['base_url'] . '/pages/admin-destinations.php');
+        }
+
+        $existingImagePath = '';
+        $destinationId = 0;
+
+        if ($action === 'update') {
+            $destinationId = (int)($_POST['destination_id'] ?? 0);
+
+            if ($destinationId < 1) {
+                setFlash('flash_error', 'Destinacioni nuk u gjet.');
+                redirect($GLOBALS['base_url'] . '/pages/admin-destinations.php');
+            }
+
+            $existingDestinationStatement = $pdo->prepare(
+                'SELECT image_path
+                 FROM destinations
+                 WHERE id = :id
+                 LIMIT 1'
+            );
+            $existingDestinationStatement->execute(['id' => $destinationId]);
+            $existingDestination = $existingDestinationStatement->fetch();
+
+            if (!$existingDestination) {
+                setFlash('flash_error', 'Destinacioni nuk u gjet.');
+                redirect($GLOBALS['base_url'] . '/pages/admin-destinations.php');
+            }
+
+            $existingImagePath = (string)($existingDestination['image_path'] ?? '');
+        }
+          
+         $formData = [
+            'city' => trim($_POST['city'] ?? ''),
+            'country' => trim($_POST['country'] ?? ''),
+            'description' => trim($_POST['description'] ?? ''),
+            'image_path' => $existingImagePath,
+        ];
+        
         }
     }
-}
