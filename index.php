@@ -25,3 +25,41 @@ function get_sorted_destinations(PDO $pdo): array
 
     return $destinations;
 }
+<?php
+// views/index.view.php
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/nav.php';
+?>
+
+<header class="hero" id="hero">
+    <div class="hero-overlay">
+        <h1 class="hero-title">Fly With Us</h1>
+        <p class="hero-subtitle">Zbuloni destinacione te bukura, shikoni ofertat...</p>
+        <div class="hero-actions"><a href="#destinations" class="btn-primary">Shiko Ofertat</a></div>
+    </div>
+</header>
+
+<main>
+    <?php if ($flashSuccess): ?><div class="alert success"><?= e($flashSuccess) ?></div><?php endif; ?>
+    <?php if ($flashError): ?><div class="alert error"><?= e($flashError) ?></div><?php endif; ?>
+
+    <section class="info-strip">
+        <div>Cookie preference: <strong><?= $preferredCity ? e($preferredCity) : 'Nuk ka ruajtur' ?></strong></div>
+        <div>Session: <?= $currentUser ? e($currentUser->getGreeting()) : 'Demo login' ?></div>
+    </section>
+
+    <section class="destinations" id="destinations">
+        <h2>Destinacionet dhe Ofertat</h2>
+        <?php if ($destinationsError): ?>
+            <div class="alert error"><?= e($destinationsError) ?></div>
+        <?php elseif (!$destinations): ?>
+            <div class="alert error">Aktualisht nuk ka destinacione.</div>
+        <?php else: ?>
+            <div class="cards">
+                <?php foreach ($destinations as $destination): ?>
+                    <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </section>
+</main>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
