@@ -204,3 +204,44 @@ try {
             }
         }
     }
+     if ($editingId > 0 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $editStatement = $pdo->prepare(
+            'SELECT id, origin_city_id, destination_id, price
+             FROM routes
+             WHERE id = :id
+             LIMIT 1'
+        );
+        $editStatement->execute(['id' => $editingId]);
+        $editingRoute = $editStatement->fetch();
+
+        if ($editingRoute) {
+            $formData = [
+                'origin_city_id' => (string)$editingRoute['origin_city_id'],
+                'destination_id' => (string)$editingRoute['destination_id'],
+                'price' => (string)$editingRoute['price'],
+            ];
+        } else {
+            setFlash('flash_error', 'Rruga nuk u gjet.');
+            redirect($GLOBALS['base_url'] . '/pages/admin-routes.php');
+        }
+    }
+
+    $routesStatement = $pdo->prepare(
+        'SELECT
+            r.id,
+            oc.city AS origin_city,
+            d.city AS destination_city,
+            r.price,
+            COUNT(b.id) AS bookings_count
+         FROM routes r
+         INNER JOIN origin_cities oc ON oc.id = r.origin_city_id
+         INNER JOIN destinations d ON d.id = r.destination_id
+         LEFT JOIN bookings b ON b.route_id = r.id
+         GROUP BY r.id, oc.city, d.city, r.price
+         ORDER BY oc.city ASC, d.city ASC'
+    );
+    $routesStatement->execute();
+    $routes = $routesStatement->fetchAll();
+} catch (PDOException $exception) {
+    $formError = 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.';
+}
