@@ -112,3 +112,58 @@ INSERT INTO `destinations` (`id`, `city`, `country`, `description`, `image_path`
     (6, 'London', 'United Kingdom', 'Metropol i madh me muze, teatër dhe destinacione turistike të njohura.', NULL),
     (7, 'Rome', 'Italy', 'Qytet klasik me histori, arkitekturë dhe kuzhinë tradicionale.', NULL),
     (8, 'Barcelona', 'Spain', 'Qytet mesdhetar me arkitekturë ikonike, plazhe dhe jetë të gjallë urbane.', 'assets/img/barcelona.jpg');
+
+INSERT INTO `origin_cities` (`id`, `city`, `country`) VALUES
+    (1, 'Prishtina', 'Kosovo'),
+    (2, 'Tirana', 'Albania'),
+    (3, 'Shkup', 'North Macedonia'),
+    (4, 'Podgorica', 'Montenegro'),
+    (5, 'Sarajevo', 'Bosnia and Herzegovina');
+
+INSERT INTO `routes` (`id`, `origin_city_id`, `destination_id`, `price`) VALUES
+    (1, 1, 1, 399.00),
+    (2, 1, 2, 299.00),
+    (3, 1, 3, 749.00),
+    (4, 1, 4, 499.00),
+    (5, 1, 5, 279.00),
+    (6, 1, 6, 350.00),
+    (7, 1, 7, 320.00),
+    (8, 2, 1, 420.00),
+    (9, 2, 2, 310.00),
+    (10, 2, 3, 770.00),
+    (11, 2, 4, 520.00),
+    (12, 2, 5, 290.00),
+    (13, 2, 6, 360.00),
+    (14, 2, 7, 330.00),
+    (15, 3, 1, 430.00),
+    (16, 3, 2, 320.00),
+    (17, 3, 3, 780.00),
+    (18, 3, 4, 530.00),
+    (19, 3, 5, 295.00),
+    (20, 3, 6, 370.00),
+    (21, 3, 7, 335.00),
+    (22, 4, 1, 450.00),
+    (23, 4, 2, 340.00),
+    (24, 4, 3, 800.00),
+    (25, 4, 4, 550.00),
+    (26, 4, 5, 310.00),
+    (27, 4, 6, 380.00),
+    (28, 4, 7, 350.00),
+    (29, 5, 1, 440.00),
+    (30, 5, 2, 330.00),
+    (31, 5, 3, 790.00),
+    (32, 5, 4, 540.00),
+    (33, 5, 5, 305.00),
+    (34, 5, 6, 375.00),
+    (35, 5, 7, 345.00),
+    (36, 1, 8, 315.00),
+    (37, 2, 8, 325.00),
+    (38, 3, 8, 330.00),
+    (39, 4, 8, 345.00),
+    (40, 5, 8, 335.00);
+
+INSERT INTO `bookings` (`id`, `user_id`, `route_id`, `departure_date`, `return_date`, `passengers_count`, `total_price`, `status`) VALUES
+    (1, 1, 2, '2026-06-10', '2026-06-17', 2, 1196.00, 'active');
+
+INSERT INTO `contact_messages` (`id`, `user_id`, `name`, `email`, `subject`, `message`) VALUES
+    (1, 1, 'Customer FlyWithUs', 'customer@flywithus.com', 'Pyetje për bagazhin', 'A mund të shtoj bagazh ekstra pasi ta bëj rezervimin?');
