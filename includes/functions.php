@@ -119,3 +119,24 @@ function requireRole(string $role): void
         redirect($GLOBALS['base_url'] . '/index.php');
     }
 }
+
+function storeUserSession(array $userData): void
+{
+    $_SESSION['user_id'] = (int)$userData['id'];
+    $_SESSION['user_name'] = $userData['name'];
+    $_SESSION['user_email'] = $userData['email'];
+    $_SESSION['user_username'] = $userData['username'];
+    $_SESSION['user_role'] = $userData['role'];
+}
+
+function clearUserSession(): void
+{
+    unset(
+        $_SESSION['user_id'],
+        $_SESSION['user_name'],
+        $_SESSION['user_email'],
+        $_SESSION['user_username'],
+        $_SESSION['user_role'],
+        $_SESSION['last_login']
+    );
+}
