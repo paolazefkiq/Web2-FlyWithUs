@@ -47,3 +47,40 @@ $validateDestinationForm = static function (array $data): array {
 
     return $errors;
 };
+
+$prepareDestinationImageUpload = static function (?array $file, string $city) use ($uploadRelativeDirectory, $uploadDirectory): array {
+    if (!$file || ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+        return [
+            'error' => '',
+            'relative_path' => null,
+            'absolute_path' => null,
+        ];
+    }
+
+    if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+        return [
+            'error' => 'Ngarkimi i imazhit dështoi. Ju lutemi provoni përsëri.',
+            'relative_path' => null,
+            'absolute_path' => null,
+        ];
+    }
+
+    if (($file['size'] ?? 0) > 5 * 1024 * 1024) {
+        return [
+            'error' => 'Imazhi duhet të jetë deri në 5MB.',
+            'relative_path' => null,
+            'absolute_path' => null,
+        ];
+    }
+
+    $originalName = (string)($file['name'] ?? '');
+    $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+
+    if (!in_array($extension, $allowedExtensions, true)) {
+        return [
+            'error' => 'Lejohen vetëm formatet JPG, JPEG, PNG, WEBP dhe AVIF.',
+            'relative_path' => null,
+            'absolute_path' => null,
+        ];
+    }
