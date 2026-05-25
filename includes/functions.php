@@ -158,3 +158,19 @@ function buildDestinationImagePath(array $destination): string
             return $configuredPath;
         }
     }
+
+    $manualImageMap = [
+        'Dubai' => 'assets/img/dubai.jpg',
+        'Berlin' => 'assets/img/berlin.jpg',
+        'London' => 'assets/img/london.jpg',
+        'Rome' => 'assets/img/rome.jpg',
+    ];
+
+    $cityName = (string)($destination['city'] ?? '');
+
+    if (isset($manualImageMap[$cityName]) && publicAssetExists($manualImageMap[$cityName])) {
+        return $manualImageMap[$cityName];
+    }
+
+    return 'assets/img/airplane-bg.jpg';
+}
