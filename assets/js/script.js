@@ -5,6 +5,28 @@ function toggleMenu() {
     }
 }
 
+function updatePopupVisibility(popupElement, buttonElement) {
+    if (!popupElement || !buttonElement) {
+        return;
+    }
+
+    buttonElement.addEventListener("click", () => {
+        popupElement.style.display = "none";
+    });
+
+    popupElement.addEventListener("click", (event) => {
+        if (event.target === popupElement) {
+            popupElement.style.display = "none";
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            popupElement.style.display = "none";
+        }
+    });
+}
+
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
     yearSpan.textContent = new Date().getFullYear();

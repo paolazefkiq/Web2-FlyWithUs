@@ -34,7 +34,7 @@ $navClass = static function (array $paths) use ($isActivePath): string {
 
     <div class="nav-links" id="navLinks">
         <a class="<?= $navClass(['/index.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/index.php">Ballina</a>
-        <a class="<?= $navClass(['/pages/booking.php', '/booking.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/booking.php">Rezervo</a>
+        <a class="<?= $navClass(['/pages/booking.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/booking.php">Rezervo</a>
         <a class="<?= $navClass(['/pages/about.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/about.php">Rreth Nesh</a>
         <a class="<?= $navClass(['/pages/faq.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/faq.php">FAQ</a>
         <a class="<?= $navClass(['/pages/contact.php']) ?>" href="<?= $GLOBALS['base_url'] ?>/pages/contact.php">Kontakti</a>
