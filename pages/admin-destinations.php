@@ -84,3 +84,27 @@ $prepareDestinationImageUpload = static function (?array $file, string $city) us
             'absolute_path' => null,
         ];
     }
+
+    $citySlug = strtolower((string)preg_replace('/[^a-z0-9]+/i', '-', $city));
+    $citySlug = trim($citySlug, '-');
+
+    if ($citySlug === '') {
+        $citySlug = 'destination';
+    }
+
+    try {
+        $uniquePart = bin2hex(random_bytes(4));
+    } catch (Exception $exception) {
+        $uniquePart = (string)mt_rand(1000, 9999);
+    }
+
+    $fileName = $citySlug . '-' . date('YmdHis') . '-' . $uniquePart . '.' . $extension;
+    $relativePath = $uploadRelativeDirectory . '/' . $fileName;
+    $absolutePath = $uploadDirectory . DIRECTORY_SEPARATOR . $fileName;
+
+    return [
+        'error' => '',
+        'relative_path' => $relativePath,
+        'absolute_path' => $absolutePath,
+    ];
+};
