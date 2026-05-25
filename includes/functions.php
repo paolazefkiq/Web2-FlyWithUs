@@ -141,35 +141,10 @@ function clearUserSession(): void
     );
 }
 
-function publicAssetExists(string $relativePath): bool
-{
-    $relativePath = ltrim($relativePath, '/');
-    $absolutePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relativePath);
-
-    return is_file($absolutePath);
-}
-
 function buildDestinationImagePath(array $destination): string
 {
     if (!empty($destination['image_path'])) {
-        $configuredPath = ltrim((string)$destination['image_path'], '/');
-
-        if (publicAssetExists($configuredPath)) {
-            return $configuredPath;
-        }
-    }
-
-    $manualImageMap = [
-        'Dubai' => 'assets/img/dubai.jpg',
-        'Berlin' => 'assets/img/berlin.jpg',
-        'London' => 'assets/img/london.jpg',
-        'Rome' => 'assets/img/rome.jpg',
-    ];
-
-    $cityName = (string)($destination['city'] ?? '');
-
-    if (isset($manualImageMap[$cityName]) && publicAssetExists($manualImageMap[$cityName])) {
-        return $manualImageMap[$cityName];
+        return ltrim((string)$destination['image_path'], '/');
     }
 
     return 'assets/img/airplane-bg.jpg';
