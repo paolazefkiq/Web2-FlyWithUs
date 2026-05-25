@@ -245,3 +245,45 @@ try {
 } catch (PDOException $exception) {
     $formError = 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.';
 }
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/nav.php';
+?>
+
+<main class="page-wrap dashboard-page">
+    <section class="dashboard-hero">
+        <div>
+            <h1>Menaxho Rruget</h1>
+            <p class="page-subtitle">Lidh qytetet e nisjes me destinacionet dhe cmimet perkatese.</p>
+        </div>
+        <div class="admin-toolbar">
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-dashboard.php" class="btn-secondary">Kthehu te dashboard</a>
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-origin-cities.php" class="btn-secondary">Menaxho nisjet</a>
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-destinations.php" class="btn-primary">Menaxho destinacionet</a>
+        </div>
+    </section>
+
+    <?php if ($flashSuccess): ?>
+        <div class="alert success"><?= e($flashSuccess) ?></div>
+    <?php endif; ?>
+
+    <?php if ($flashError): ?>
+        <div class="alert error"><?= e($flashError) ?></div>
+    <?php endif; ?>
+
+    <?php if ($formError): ?>
+        <div class="alert error"><?= e($formError) ?></div>
+    <?php endif; ?>
+
+    <section class="dashboard-card">
+        <div class="dashboard-section-header">
+            <div>
+                <h3><?= $editingId > 0 ? 'Perditeso rrugen' : 'Shto rruge te re' ?></h3>
+                <p class="dashboard-section-subtitle">
+                    <?php if ($prefillDestinationId > 0 && !$editingId): ?>
+                        Destinacioni u zgjodh nga lista e destinacioneve. Zgjidhni nisjen dhe cmimin.
+                    <?php else: ?>
+                        Cdo kombinim i nisjes dhe destinacionit ruhet nje here.
+                    <?php endif; ?>
+                </p>
+            </div>
+        </div>
