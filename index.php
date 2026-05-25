@@ -1,4 +1,26 @@
 <?php
+// index.php
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/destinations.php'; 
+
+$currentUser = currentUser();
+$destinationsError = '';
+$destinations = [];
+$preferredCity = $_COOKIE['preferred_city'] ?? '';
+$flashSuccess = getFlash('flash_success');
+$flashError = getFlash('flash_error');
+
+try {
+    $pdo = getPDO();
+    $destinations = get_sorted_destinations($pdo); 
+} catch (PDOException $exception) {
+    $destinationsError = 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.';
+}
+
+$pageTitle = 'Ballina';
+require_once __DIR__ . '/views/index.view.php';
+
+<?php
 
 function get_sorted_destinations(PDO $pdo): array 
 {
@@ -26,7 +48,7 @@ function get_sorted_destinations(PDO $pdo): array
     return $destinations;
 }
 <?php
-// views/index.view.php
+
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/nav.php';
 ?>
