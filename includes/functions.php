@@ -140,3 +140,21 @@ function clearUserSession(): void
         $_SESSION['last_login']
     );
 }
+
+function publicAssetExists(string $relativePath): bool
+{
+    $relativePath = ltrim($relativePath, '/');
+    $absolutePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relativePath);
+
+    return is_file($absolutePath);
+}
+
+function buildDestinationImagePath(array $destination): string
+{
+    if (!empty($destination['image_path'])) {
+        $configuredPath = ltrim((string)$destination['image_path'], '/');
+
+        if (publicAssetExists($configuredPath)) {
+            return $configuredPath;
+        }
+    }
