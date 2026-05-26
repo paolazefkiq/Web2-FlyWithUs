@@ -1,6 +1,10 @@
 <?php
 
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 $contactPageUrl = $GLOBALS['base_url'] . '/pages/contact.php';
 $currentUser = currentUser();
@@ -47,99 +51,6 @@ if (array_filter($errors)) {
     redirect($contactPageUrl);
 }
 
-$sendProjectContactEmail = static function (
-    string $subject,
-    string $message,
-    User $currentUser
-): array {
-    $smtpUsername = trim((string)($GLOBALS['smtp_username'] ?? ''));
-    $smtpPassword = trim((string)($GLOBALS['smtp_password'] ?? ''));
-    $smtpFromEmail = trim((string)($GLOBALS['smtp_from_email'] ?? ''));
-    $smtpFromName = trim((string)($GLOBALS['smtp_from_name'] ?? ($GLOBALS['site_name'] ?? 'Fly With Us')));
-    $smtpHost = trim((string)($GLOBALS['smtp_host'] ?? 'smtp.gmail.com'));
-    $smtpPort = (int)($GLOBALS['smtp_port'] ?? 587);
-    $smtpEncryption = trim((string)($GLOBALS['smtp_encryption'] ?? 'tls'));
-    $recipientEmail = trim((string)($GLOBALS['contact_inbox_email'] ?? ''));
-
-    if ($smtpFromEmail === '' && $smtpUsername !== '') {
-        $smtpFromEmail = $smtpUsername;
-    }
-
-    if ($recipientEmail === '') {
-        $recipientEmail = trim((string)($GLOBALS['support_email'] ?? ''));
-    }
-
-    $vendorAutoload = dirname(__DIR__) . '/vendor/autoload.php';
-
-    if (!is_file($vendorAutoload)) {
-        return [
-            'sent' => false,
-            'message' => 'Mesazhi u ruajt me sukses, por PHPMailer nuk eshte i instaluar.',
-        ];
-    }
-
-    if (
-        $smtpUsername === '' ||
-        $smtpPassword === '' ||
-        $smtpFromEmail === '' ||
-        $recipientEmail === ''
-    ) {
-        return [
-            'sent' => false,
-            'message' => 'Mesazhi u ruajt me sukses, por email-i nuk eshte konfiguruar ende.',
-        ];
-    }
-
-    require_once $vendorAutoload;
-
-    if (!class_exists(\PHPMailer\PHPMailer\PHPMailer::class)) {
-        return [
-            'sent' => false,
-            'message' => 'Mesazhi u ruajt me sukses, por PHPMailer nuk u ngarkua si duhet.',
-        ];
-    }
-
-    try {
-        $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host = $smtpHost;
-        $mail->SMTPAuth = true;
-        $mail->Username = $smtpUsername;
-        $mail->Password = $smtpPassword;
-        $mail->SMTPSecure = $smtpEncryption;
-        $mail->Port = $smtpPort;
-        $mail->CharSet = 'UTF-8';
-
-        $mail->setFrom($smtpFromEmail, $smtpFromName);
-        $mail->addAddress($recipientEmail);
-        $mail->isHTML(true);
-        $mail->Subject = 'Kontakt: ' . $subject;
-        $mail->Body =
-            '<h2>Mesazh i ri nga forma e kontaktit</h2>'
-            . '<p><strong>Emri:</strong> ' . e($currentUser->getName()) . '</p>'
-            . '<p><strong>Email:</strong> ' . e($currentUser->getEmail()) . '</p>'
-            . '<p><strong>Subjekti:</strong> ' . e($subject) . '</p>'
-            . '<p><strong>Mesazhi:</strong><br>' . nl2br(e($message)) . '</p>';
-        $mail->AltBody =
-            "Mesazh i ri nga forma e kontaktit\n\n"
-            . "Emri: " . $currentUser->getName() . "\n"
-            . "Email: " . $currentUser->getEmail() . "\n"
-            . "Subjekti: " . $subject . "\n\n"
-            . "Mesazhi:\n" . $message . "\n";
-        $mail->send();
-
-        return [
-            'sent' => true,
-            'message' => 'Mesazhi u ruajt dhe u dergua me email.',
-        ];
-    } catch (\Throwable $exception) {
-        return [
-            'sent' => false,
-            'message' => 'Mesazhi u ruajt me sukses, por dergimi i email-it deshtoi.',
-        ];
-    }
-};
-
 try {
     $pdo = getPDO();
     $insertStatement = $pdo->prepare(
@@ -154,15 +65,51 @@ try {
     $insertStatement->bindValue(':message', $old['message'], PDO::PARAM_STR);
     $insertStatement->execute();
 
-    $deliveryResult = $sendProjectContactEmail($old['subject'], $old['message'], $currentUser);
-    $_SESSION['contact_popup_success'] = $deliveryResult['sent']
-        ? $deliveryResult['message'] . ' Do t\'ju kontaktojme sa me shpejt.'
-        : $deliveryResult['message'];
+    $smtpUsername = trim((string)($GLOBALS['smtp_username'] ?? ''));
+    $smtpPassword = trim((string)($GLOBALS['smtp_password'] ?? ''));
+    $smtpFromEmail = trim((string)($GLOBALS['smtp_from_email'] ?? ''));
+    $recipientEmail = trim((string)($GLOBALS['contact_inbox_email'] ?? ''));
 
+    if (
+        $smtpUsername === '' ||
+        $smtpPassword === '' ||
+        $smtpFromEmail === '' ||
+        $recipientEmail === ''
+    ) {
+        $_SESSION['contact_popup_success'] = 'Mesazhi u ruajt me sukses, por email-i nuk eshte konfiguruar ende.';
+        redirect($contactPageUrl);
+    }
+
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host = (string)($GLOBALS['smtp_host'] ?? 'smtp.gmail.com');
+    $mail->SMTPAuth = true;
+    $mail->Username = $smtpUsername;
+    $mail->Password = $smtpPassword;
+    $mail->SMTPSecure = (string)($GLOBALS['smtp_encryption'] ?? 'tls');
+    $mail->Port = (int)($GLOBALS['smtp_port'] ?? 587);
+    $mail->CharSet = 'UTF-8';
+
+    $mail->setFrom($smtpFromEmail, (string)($GLOBALS['smtp_from_name'] ?? 'Fly With Us'));
+    $mail->addAddress($recipientEmail);
+    $mail->addReplyTo($currentUser->getEmail(), $currentUser->getName());
+    $mail->isHTML(true);
+    $mail->Subject = 'Kontakt: ' . $old['subject'];
+    $mail->Body =
+        '<h2>Mesazh i ri nga forma e kontaktit</h2>'
+        . '<p><strong>Emri:</strong> ' . e($currentUser->getName()) . '</p>'
+        . '<p><strong>Email:</strong> ' . e($currentUser->getEmail()) . '</p>'
+        . '<p><strong>Subjekti:</strong> ' . e($old['subject']) . '</p>'
+        . '<p><strong>Mesazhi:</strong><br>' . nl2br(e($old['message'])) . '</p>';
+
+    $mail->send();
+
+    $_SESSION['contact_popup_success'] = 'Mesazhi u ruajt dhe u dergua me email. Do t\'ju kontaktojme sa me shpejt.';
     redirect($contactPageUrl);
-} catch (PDOException $exception) {
+} catch (Exception | PDOException $exception) {
     $_SESSION['contact_old'] = $old;
     $_SESSION['contact_errors'] = $errors;
-    setFlash('contact_error', 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.');
+    $_SESSION['contact_popup_success'] = 'Mesazhi u ruajt me sukses, por dergimi i email-it deshtoi.';
     redirect($contactPageUrl);
 }
+
