@@ -247,5 +247,26 @@ try {
                     $formData['image_path'] = $storedImagePath;
                 }
             }
-        }
+
+            if ($formError === '') {
+                try {
+                    if ($action === 'update') {
+                        $statement = $pdo->prepare(
+                            'UPDATE destinations
+                             SET city = :city,
+                                 country = :country,
+                                 description = :description,
+                                 image_path = :image_path
+                             WHERE id = :id'
+                        );
+                        $statement->execute([
+                            'city' => $formData['city'],
+                            'country' => $formData['country'],
+                            'description' => $formData['description'],
+                            'image_path' => $storedImagePath !== '' ? $storedImagePath : null,
+                            'id' => $destinationId,
+                        ]);
+                        
+         }
     }
+    
