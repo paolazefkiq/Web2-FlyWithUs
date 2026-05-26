@@ -28,7 +28,7 @@ CREATE TABLE `destinations` (
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY `unique_destinations_city` (`city`)
-) 
+)
 
 CREATE TABLE `origin_cities` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -96,7 +96,7 @@ CREATE TABLE `contact_messages` (
         FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
         ON DELETE SET NULL
         ON UPDATE CASCADE
-)
+) 
 
 INSERT INTO `users` (`id`, `full_name`, `email`, `username`, `password_hash`, `role`, `last_login_at`) VALUES
     (1, 'Customer FlyWithUs', 'customer@flywithus.com', 'customer1', '$2y$10$oLuVr7W1SExGgCWrjzUKMO8kjbYxcmj.Gjc.MHbmQXjvJBPXMAovi', 'customer', NULL),
@@ -107,10 +107,10 @@ INSERT INTO `destinations` (`id`, `city`, `country`, `description`, `image_path`
     (1, 'New York', 'USA', 'Qytet ikonik për udhëtime, kulturë dhe atraksione të njohura botërore.', 'assets/img/newyork.jpg'),
     (2, 'Paris', 'France', 'Destinacion romantik me muze, ushqim të shkëlqyer dhe monumente të famshme.', 'assets/img/paris.jpg'),
     (3, 'Tokyo', 'Japan', 'Përzierje unike mes traditës dhe teknologjisë moderne.', 'assets/img/tokyo.jpg'),
-    (4, 'Dubai', 'United Arab Emirates', 'Qytet modern me luks, plazhe dhe qendra të mëdha tregtare.', NULL),
-    (5, 'Berlin', 'Germany', 'Qytet historik me art, kulturë dhe jetë të gjallë urbane.', NULL),
-    (6, 'London', 'United Kingdom', 'Metropol i madh me muze, teatër dhe destinacione turistike të njohura.', NULL),
-    (7, 'Rome', 'Italy', 'Qytet klasik me histori, arkitekturë dhe kuzhinë tradicionale.', NULL),
+    (4, 'Dubai', 'United Arab Emirates', 'Qytet modern me luks, plazhe dhe qendra të mëdha tregtare.', 'assets/img/dubai.jpg'),
+    (5, 'Berlin', 'Germany', 'Qytet historik me art, kulturë dhe jetë të gjallë urbane.', 'assets/img/berlin.jpg'),
+    (6, 'London', 'United Kingdom', 'Metropol i madh me muze, teatër dhe destinacione turistike të njohura.', 'assets/img/london.jpg'),
+    (7, 'Rome', 'Italy', 'Qytet klasik me histori, arkitekturë dhe kuzhinë tradicionale.', 'assets/img/rome.jpg'),
     (8, 'Barcelona', 'Spain', 'Qytet mesdhetar me arkitekturë ikonike, plazhe dhe jetë të gjallë urbane.', 'assets/img/barcelona.jpg');
 
 INSERT INTO `origin_cities` (`id`, `city`, `country`) VALUES
@@ -162,8 +162,3 @@ INSERT INTO `routes` (`id`, `origin_city_id`, `destination_id`, `price`) VALUES
     (39, 4, 8, 345.00),
     (40, 5, 8, 335.00);
 
-INSERT INTO `bookings` (`id`, `user_id`, `route_id`, `departure_date`, `return_date`, `passengers_count`, `total_price`, `status`) VALUES
-    (1, 1, 2, '2026-06-10', '2026-06-17', 2, 1196.00, 'active');
-
-INSERT INTO `contact_messages` (`id`, `user_id`, `name`, `email`, `subject`, `message`) VALUES
-    (1, 1, 'Customer FlyWithUs', 'customer@flywithus.com', 'Pyetje për bagazhin', 'A mund të shtoj bagazh ekstra pasi ta bëj rezervimin?');
