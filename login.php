@@ -24,3 +24,14 @@ $errors = [
     'password' => '',
     'general' => '',
 ];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $redirectAfterLogin = sanitizeInternalRedirect($_POST['post_login_redirect'] ?? '');
+    $login = trim($_POST['login'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    $old['login'] = $login;
+    $errors['login'] = validateLoginValue($login);
+
+    if ($password === '') {
+        $errors['password'] = 'Ju lutem plotesoni fjalekalimin.';
+    }
