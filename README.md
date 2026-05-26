@@ -1,145 +1,142 @@
-# Fly With Us – Web Project (Faza 1)
+# Fly With Us - Web Project (Faza 2)
 
-## Përshkrimi i projektit
+## Pershkrimi
 
-Ky projekt është realizuar në kuadër të lëndës “Programimi në ueb nga ana e Serverit” dhe paraqet një aplikacion web për rezervimin e fluturimeve.
+`Fly With Us` eshte nje aplikacion i thjeshte web per shfaqjen e ofertave, rezervimin e fluturimeve dhe menaxhimin e te dhenave nga administratori. Projekti eshte realizuar ne kuader te lendes `Programimi ne ueb nga ana e Serverit`.
 
-Në Fazën 1, aplikacioni është zhvilluar duke përdorur PHP pa databazë, ku të gjitha të dhënat janë të simuluara (dummy). Projekti demonstron përdorimin e koncepteve bazë të PHP-së, programimit të orientuar në objekte, validimit server-side, si dhe menaxhimit të sesioneve dhe cookies.
+## Teknologjite
 
-## Struktura e projektit
+- PHP
+- MySQL / MariaDB
+- PDO me prepared statements
+- HTML / CSS
+- JavaScript
+- XAMPP
 
-Projekti është i organizuar në mënyrë të qartë në folderë sipas funksionalitetit:
+## Struktura
 
-* `index.php` – faqja kryesore me formën e rezervimit
-* `login.php` – forma për kyçje
-* `logout.php` – dalje nga sistemi
+- `index.php` - faqja kryesore me ofertat
+- `login.php` - kycja
+- `logout.php` - dalja
+- `includes/` - konfigurimi, databaza, header, nav, footer, helper functions
+- `classes/` - `User`, `Admin`, `Customer`
+- `pages/` - faqet publike, dashboard-et dhe CRUD faqet
+- `assets/` - CSS, JavaScript dhe imazhet
+- `database/flywithus.sql` - databaza dhe te dhenat fillestare
 
-Folderët kryesorë:
+## Setup
 
-* `includes/`
-
-  * `config.php` – konfigurimi dhe të dhënat dummy
-  * `header.php` – pjesa e sipërme e faqes
-  * `nav.php` – navigimi
-  * `footer.php` – pjesa e poshtme e faqes
-
-* `classes/`
-
-  * `User.php` – klasa bazë
-  * `Admin.php` – klasa për administratorin
-  * `Customer.php` – klasa për përdoruesin e zakonshëm
-
-* `pages/`
-
-  * `about.php`
-  * `contact.php`
-  * `faq.php`
-  * `admin-dashboard.php`
-  * `customer-dashboard.php`
-
-* `assets/`
-
-  * CSS, JavaScript dhe imazhe
-
-## Ekzekutimi i projektit
-
-1. Instaloni dhe hapni XAMPP
-2. Vendosni folderin e projektit në:
-   `C:\xampp\htdocs\`
-3. Sigurohuni që folderi quhet:
-   `Web2-FlyWithUs`
-4. Startoni Apache në XAMPP
-5. Hapni browser dhe shkoni te:
+1. Vendoseni projektin ne:
+   `C:\xampp\htdocs\Web2-FlyWithUs`
+2. Startoni `Apache` dhe `MySQL` nga XAMPP.
+3. Hapni phpMyAdmin dhe krijoni databazen:
+   `flywithus`
+4. Importoni skedarin:
+   `database/flywithus.sql`
+5. Sigurohuni qe MySQL po perdor portin `3307`, sepse kjo eshte porta e konfiguruar ne `includes/db.php`.
+6. Hapni projektin ne browser:
    `http://localhost/Web2-FlyWithUs`
 
-## Login
+## Kredencialet demo
 
-Aplikacioni përdor kredenciale statike të ruajtura në kod.
+### Customer
 
-Customer:
+- Email: `customer@flywithus.com`
+- Username: `customer1`
+- Password: `Customer123`
 
-* Email: [customer@flywithus.com](mailto:customer@flywithus.com)
-* Username: customer1
-* Password: Customer123
+### Customer 2
 
-Admin:
+- Email: `customer2@flywithus.com`
+- Username: `customer2`
+- Password: `Customer123`
 
-* Email: [admin@flywithus.com](mailto:admin@flywithus.com)
-* Username: admin1
-* Password: Admin123
+### Admin
 
-## Përputhja me kërkesat e Fazës 1
-### 1. Struktura e aplikacionit
+- Email: `admin@flywithus.com`
+- Username: `admin1`
+- Password: `Admin123`
 
-* Projekti përmban më shumë se 4 faqe funksionale
-* Përdoret include/require për header, navigim dhe footer
-* Folderët janë të organizuar në mënyrë të qartë (pages, includes, classes, assets)
+## Databaza
 
-### 2. Login/Logout pa databazë
+Tabelat kryesore:
 
-* Kredencialet janë të ruajtura në kod (hardcoded)
-* Nuk përdoret databazë
-* Përdoret session për ruajtjen e gjendjes së përdoruesit
-* Implementohen dy role: admin dhe customer
-* Qasja ndryshon në bazë të rolit (dashboard-e të ndryshme)
+- `users`
+- `destinations`
+- `origin_cities`
+- `routes`
+- `bookings`
+- `contact_messages`
 
-### 3. Konceptet bazë të PHP
+Lidhjet kryesore:
 
-* Përdorim i variablave dhe variablave globale
-* Funksione ndihmëse (helper functions)
-* Struktura kushtore (if/else)
-* Cikle (foreach, for)
-* Arrays:
+- `users (1) -> (N) bookings`
+- `users (1) -> (N) contact_messages`
+- `origin_cities (1) -> (N) routes`
+- `destinations (1) -> (N) routes`
+- `routes (1) -> (N) bookings`
 
-  * numeric arrays
-  * associative arrays
-  * multidimensional arrays
-* Sortime me funksionin usort()
-
-### 4. OOP në PHP
-
-* Klasa të implementuara: User, Admin, Customer
-* Konstruktor në klasën bazë
-* Metoda get dhe set
-* Enkapsulim përmes përdorimit të protected properties
-* Trashëgimi (Admin dhe Customer zgjerojnë klasën User)
-
-### 5. Validimi me RegEx
-
-* Validim server-side në PHP
-* Validim për:
-
-  * emër
-  * email
-  * username
-
-### 6. Sessions dhe Cookies
-
-* Përdorimi i session për:
-
-  * ruajtjen e përdoruesit të kyçur
-  * të dhënat e rezervimit
-  * mesazhe të formave
-* Përdorimi i cookies për:
-
-  * ruajtjen e preferencës së qytetit
+Tabela `bookings` perdor edhe kolonen `status` me vlerat `active` dhe `cancelled`.
 
 ## Funksionalitetet kryesore
-* Formë për rezervim në faqen kryesore
-* Validim server-side me shfaqje të gabimeve
-* Popup për konfirmimin e rezervimit
-* Contact form me validim dhe feedback
-* Dashboard për admin dhe customer
-* Faqe informative si About dhe FAQ
 
-## Shënime
-* Projekti nuk përdor databazë në Fazën 1
-* Të gjitha të dhënat janë të simuluara
-* Rrugët janë të bazuara në base_url të konfiguruar në projekt
+### Pjesa publike
 
-## Dorëzimi
-Dorëzimi përfshin:
+- Shfaq ofertat nga databaza
+- Rendit ofertat sipas cmimit me te ulet
+- Lejon zgjedhjen e qytetit te nisjes, destinacionit, datave dhe numrit te pasagjereve
+- Llogarit cmimin dhe ruan rezervimin ne databaze
+- Shfaq motin aktual per destinacionin me `Open-Meteo Weather API`
 
-* Kodin e projektit
-* README me udhëzime
-* Screenshot ose video demonstrim të funksionaliteteve
+### Pjesa e customer
+
+- Kyqje si customer
+- Shfaq rezervimet ne dashboard
+- Anulon rezervimin pa refresh te faqes
+- Dergon mesazh nga forma e kontaktit
+
+### Pjesa e admin
+
+- Shfaq rezervimet, mesazhet dhe aktivitetin e fundit
+- CRUD per `destinations`
+- CRUD per `origin_cities`
+- CRUD per `routes`
+- Upload i imazheve per destinacionet
+
+## Email
+
+Forma e kontaktit perdoret nga customer-i i kycur.
+
+Kur dergohet forma:
+
+1. mesazhi ruhet ne `contact_messages`
+2. projekti tenton dergimin e emailit me PHPMailer dhe Gmail SMTP
+
+Per konfigurim duhen plotesuar ne `includes/config.php`:
+
+- `smtp_username`
+- `smtp_password`
+- `smtp_from_email`
+- `contact_inbox_email`
+
+`contact_inbox_email` eshte inbox-i ku pranohen mesazhet.
+
+## AJAX
+
+Operacioni pa refresh eshte anulimi i rezervimit nga customer dashboard permes `fetch()`.
+
+## Siguria dhe validimi
+
+- `password_hash()` / `password_verify()`
+- prepared statements me PDO
+- output escaping me helper-in `e()`
+- validim server-side
+- role-based access per admin/customer
+- sessione per auth dhe flash messages
+- cookie per `preferred_city`
+
+## Shenime
+
+- Te dhenat dinamike vijne nga databaza.
+- Te dhenat statike si FAQ, emri i faqes dhe kontaktet ruhen ne `includes/config.php`.
+- Projekti perfshin PHPMailer ne folderin `vendor/`, prandaj nuk ka nevoje per instalim shtese nese ky folder eshte i pranishem.
