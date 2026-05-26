@@ -2,44 +2,43 @@
 
 require_once __DIR__ . '/../includes/config.php';
 
-$old = $_SESSION['contact_old'] ?? [
-    'name' => '',
-    'email' => '',
+$currentUser = currentUser();
+$canSubmitMessage = $currentUser && $currentUser->canSendContactMessage();
+$contactPageUrl = $GLOBALS['base_url'] . '/pages/contact.php';
+$loginUrl = $GLOBALS['base_url'] . '/login.php?redirect=' . urlencode($contactPageUrl);
+$messagesUrl = $GLOBALS['base_url'] . '/pages/admin-dashboard.php#messages';
+
+$defaultValues = [
     'subject' => '',
-    'message' => ''
+    'message' => '',
 ];
+
+$old = $_SESSION['contact_old'] ?? $defaultValues;
 unset($_SESSION['contact_old']);
 
 $errors = $_SESSION['contact_errors'] ?? [
-    'name' => '',
-    'email' => '',
     'subject' => '',
     'message' => ''
 ];
 unset($_SESSION['contact_errors']);
 
+$contactError = getFlash('contact_error');
 $popupSuccess = $_SESSION['contact_popup_success'] ?? '';
 unset($_SESSION['contact_popup_success']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    foreach ($old as $key => $value) {
-        $old[$key] = trim($_POST[$key] ?? '');
+    if (!$currentUser) {
+        setFlash('contact_error', 'Ju duhet të kyçeni për të na shkruar.');
+        redirect($contactPageUrl);
     }
 
-    $namePattern = '/^[A-Za-zÇçËëÁÉÍÓÚáéíóúÄÖÜäöü\s]{2,50}$/u';
-    $emailPattern = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
-
-    if ($old['name'] === '') {
-        $errors['name'] = 'Ju lutem plotësoni emrin.';
-    } elseif (!preg_match($namePattern, $old['name'])) {
-        $errors['name'] = 'Emri duhet të ketë vetëm shkronja dhe së paku 2 karaktere.';
+    if (!$currentUser->canSendContactMessage()) {
+        setFlash('contact_error', 'Mesazhet e klientëve menaxhohen në dashboard-in e administratorit.');
+        redirect($contactPageUrl);
     }
 
-    if ($old['email'] === '') {
-        $errors['email'] = 'Ju lutem plotësoni email-in.';
-    } elseif (!preg_match($emailPattern, $old['email'])) {
-        $errors['email'] = 'Email nuk është valid.';
-    }
+    $old['subject'] = trim($_POST['subject'] ?? '');
+    $old['message'] = trim($_POST['message'] ?? '');
 
     if ($old['subject'] === '') {
         $errors['subject'] = 'Ju lutem plotësoni subjektin.';
@@ -56,28 +55,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (array_filter($errors)) {
     $_SESSION['contact_old'] = $old;
     $_SESSION['contact_errors'] = $errors;
-    header('Location: ' . $GLOBALS['base_url'] . '/pages/contact.php');
-    exit;
+    redirect($contactPageUrl);
 }
 
-$_SESSION['contact_message'] = [
-    'name' => $old['name'],
-    'email' => $old['email'],
-    'subject' => $old['subject'],
-    'message' => $old['message'],
-    'sent_at' => date('Y-m-d H:i:s')
-];
+  try {
+        $pdo = getPDO();
+        $insertStatement = $pdo->prepare(
+            'INSERT INTO contact_messages (user_id, name, email, subject, message)
+             VALUES (:user_id, :name, :email, :subject, :message)'
+        );
+      
+        $insertStatement->bindValue(':user_id', $currentUser->getId(), PDO::PARAM_INT);
+        $insertStatement->bindValue(':name', $currentUser->getName(), PDO::PARAM_STR);
+        $insertStatement->bindValue(':email', $currentUser->getEmail(), PDO::PARAM_STR);
+        $insertStatement->bindValue(':subject', $old['subject'], PDO::PARAM_STR);
+        $insertStatement->bindValue(':message', $old['message'], PDO::PARAM_STR);
+        $insertStatement->execute();
 
-$_SESSION['contact_popup_success'] = "
-    Mesazhi u dërgua me sukses!<br><br>
-    <strong>Emri:</strong> " . e($old['name']) . "<br>
-    <strong>Email:</strong> " . e($old['email']) . "<br>
-    <strong>Subjekti:</strong> " . e($old['subject']) . "
-";
+        $fromAddress = filter_var($GLOBALS['support_email'], FILTER_VALIDATE_EMAIL)
+            ? $GLOBALS['support_email']
+            : 'noreply@localhost';
+        $replyToAddress = filter_var($currentUser->getEmail(), FILTER_VALIDATE_EMAIL)
+            ? $currentUser->getEmail()
+            : $fromAddress;
+        $mailSubjectText = str_replace(["\r", "\n"], ' ', $old['subject']);
+        $mailSubject = 'Kontakt: ' . $mailSubjectText;
+        $mailBody = "Mesazh i ri nga forma e kontaktit:\n\n"
+            . "Emri: " . $currentUser->getName() . "\n"
+            . "Email: " . $currentUser->getEmail() . "\n"
+            . "Subjekti: " . $old['subject'] . "\n\n"
+            . "Mesazhi:\n" . $old['message'] . "\n";
+        $mailHeaders = [
+            'From: ' . $fromAddress,
+            'Reply-To: ' . $replyToAddress,
+            'Content-Type: text/plain; charset=UTF-8',
+        ];
+        $encodedSubject = '=?UTF-8?B?' . base64_encode($mailSubject) . '?=';
+        $previousSendmailFrom = ini_get('sendmail_from');
+        ini_set('sendmail_from', $fromAddress);
+        error_clear_last();
+        $mailSent = mail(
+            $GLOBALS['support_email'],
+            $encodedSubject,
+            $mailBody,
+            implode("\r\n", $mailHeaders)
+        );
 
-header('Location: ' . $GLOBALS['base_url'] . '/pages/contact.php');
-exit;
+        if ($previousSendmailFrom !== false) {
+            ini_set('sendmail_from', (string)$previousSendmailFrom);
+        }
+
+        $_SESSION['contact_popup_success'] = $mailSent
+            ? 'Mesazhi u ruajt dhe u dergua me email. Do t\'ju kontaktojme sa me shpejt.'
+            : (
+                PHP_OS_FAMILY === 'Windows' && trim((string)ini_get('SMTP')) === 'localhost'
+                    ? 'Mesazhi u ruajt me sukses. SMTP lokal nuk eshte i konfiguruar ende, prandaj email-i nuk u dergua.'
+                    : 'Mesazhi u ruajt me sukses, por dergimi i email-it nuk u konfirmua.'
+            );
+
+        redirect($contactPageUrl);
+    } catch (PDOException $exception) {
+        $_SESSION['contact_old'] = $old;
+        $_SESSION['contact_errors'] = $errors;
+        setFlash('contact_error', 'Ndodhi një gabim. Ju lutemi provoni përsëri më vonë.');
+        redirect($contactPageUrl);
     }
+}
 
 $pageTitle = 'Kontakti';
 require_once __DIR__ . '/../includes/header.php';
@@ -86,17 +129,17 @@ require_once __DIR__ . '/../includes/nav.php';
 
 <section class="contact-page">
     <div class="contact-page-header">
-        <span class="contact-badge">Na Kontaktoni</span>
-        <h1>Kontaktoni për Çdo Pyetje</h1>
+        <span class="contact-badge">Kontakti</span>
+        <h1>Na Kontaktoni</h1>
     </div>
 
     <div class="contact-layout-grid">
         <div class="contact-col contact-left">
-            <h2>Na Kontaktoni</h2>
-            <p class="contact-left-text">Na shkruani për pyetje rreth fluturimeve, rezervimeve apo bashkëpunimeve.</p>
+            <h2>Jemi këtu për ju</h2>
+            <p class="contact-left-text">Na shkruani për pyetje rreth fluturimeve, rezervimeve apo ofertave.</p>
 
             <div class="contact-info-item">
-                <div class="contact-icon-box">⚲</div>
+                <div class="contact-icon-box">&#9992;</div>
                 <div>
                     <h3>Zyra</h3>
                     <p>Rr. "Iliria" Nr. 27, Ferizaj, Kosovë</p>
@@ -104,15 +147,15 @@ require_once __DIR__ . '/../includes/nav.php';
             </div>
 
             <div class="contact-info-item">
-                <div class="contact-icon-box">✆</div>
+                <div class="contact-icon-box">&#9742;</div>
                 <div>
-                    <h3>Mobile</h3>
+                    <h3>Telefoni</h3>
                     <p><?= e($GLOBALS['support_phone']) ?></p>
                 </div>
             </div>
 
             <div class="contact-info-item">
-                <div class="contact-icon-box">✉</div>
+                <div class="contact-icon-box">&#9993;</div>
                 <div>
                     <h3>Email</h3>
                     <p><?= e($GLOBALS['support_email']) ?></p>
@@ -125,41 +168,19 @@ require_once __DIR__ . '/../includes/nav.php';
         </div>
 
          <div class="contact-col contact-right">
-            <form class="contact-form-box" method="POST" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" novalidate>
-                <div class="float-group">
-    <span class="input-icon">𖤘</span>
-    <input
-        type="text"
-        id="c-name"
-        name="name"
-        placeholder=" "
-        value="<?= e($old['name']) ?>"
-        class="<?= $errors['name'] ? 'input-error' : '' ?>"
-    >
-    <label for="c-name">Emri Juaj</label>
-    <?php if ($errors['name']): ?>
-        <div class="field-error"><?= e($errors['name']) ?></div>
-    <?php endif; ?>
-</div> 
+            <?php if ($canSubmitMessage): ?>
+            <form class="contact-form-box" method="POST" action="<?= $contactPageUrl ?>" novalidate> 
+                    <?php if ($contactError): ?>
+                        <div class="alert error"><?= e($contactError) ?></div>
+                    <?php endif; ?>
+
+                    <div class="contact-account-box">
+                        Po kontaktoni si:<br>
+                        <strong><?= e($currentUser->getEmail()) ?></strong>
+                         </div
 
  <div class="float-group">
-    <span class="input-icon">✉</span>
-    <input
-        type="text"
-        id="c-email"
-        name="email"
-        placeholder=" "
-        value="<?= e($old['email']) ?>"
-        class="<?= $errors['email'] ? 'input-error' : '' ?>"
-    >
-    <label for="c-email">Email Juaj</label>
-    <?php if ($errors['email']): ?>
-        <div class="field-error"><?= e($errors['email']) ?></div>
-    <?php endif; ?>
-</div>
-
- <div class="float-group">
-    <span class="input-icon">✎</span>
+    <span class="input-icon">&#9998;<</span>
     <input
         type="text"
         id="c-subject"
@@ -175,7 +196,7 @@ require_once __DIR__ . '/../includes/nav.php';
 </div>
 
  <div class="float-group">
-    <span class="input-icon">🗨</span>
+    <span class="input-icon">&#128172;</span>
     <textarea
         id="c-message"
         name="message"
@@ -190,15 +211,45 @@ require_once __DIR__ . '/../includes/nav.php';
 
     <button class="button-modern" type="submit">Dërgo Mesazh</button>
             </form>
+         <?php elseif ($currentUser): ?>
+                <div class="contact-form-box contact-form-box--notice">
+                    <?php if ($contactError): ?>
+                        <div class="alert error"><?= e($contactError) ?></div>
+                    <?php endif; ?>
+
+                    <p class="contact-notice-text">
+                        Mesazhet e klientëve menaxhohen në dashboard-in e administratorit.
+                    </p>
+                    <div class="contact-notice-actions">
+                        <a class="btn-primary btn-block" href="<?= e($messagesUrl) ?>">Shiko mesazhet</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="contact-form-box">
+                    <?php if ($contactError): ?>
+                        <div class="alert error"><?= e($contactError) ?></div>
+                    <?php endif; ?>
+
+                    <div class="contact-notice-box">
+                        <p>Kyçuni për të na shkruar nga llogaria juaj.</p>
+                        <div class="contact-notice-actions">
+                            <a class="btn-primary btn-block" href="<?= e($loginUrl) ?>">Kyçu</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
 <div id="contactPopup" class="popup-overlay" style="<?= $popupSuccess ? 'display: flex;' : 'display: none;' ?>">
     <div class="popup-box">
-        <h2>Mesazhi u dërgua me sukses!</h2>
+        <h2>Faleminderit!</h2>
         <p id="contactPopupMessage"><?= $popupSuccess ?></p>
+          <p class="popup-message" id="contactPopupMessage"><?= e($popupSuccess) ?></p>
+        <div class="popup-actions">
         <button id="contactClose" type="button">Mbylle</button>
+        </div>
     </div>
 </div>
 
