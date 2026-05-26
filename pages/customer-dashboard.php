@@ -68,3 +68,38 @@ require_once __DIR__ . '/../includes/nav.php';
     <?php if ($flashSuccess): ?>
         <div class="alert success"><?= e($flashSuccess) ?></div>
     <?php endif; ?>
+<section class="dashboard-card">
+        <div class="dashboard-section-header">
+            <div>
+                <h3>Llogaria juaj</h3>
+                <p class="dashboard-section-subtitle">Te dhenat baze te llogarise suaj dhe hyrja e fundit.</p>
+            </div>
+        </div>
+
+        <div class="dashboard-meta-list">
+            <div>
+                <span class="dashboard-meta-label">Perdoruesi</span>
+                <strong><?= e($user->getName()) ?></strong>
+            </div>
+            <div>
+                <span class="dashboard-meta-label">Email</span>
+                <strong><?= e($user->getEmail()) ?></strong>
+            </div>
+            <div>
+                <span class="dashboard-meta-label">Roli</span>
+                <strong><?= e($user->getRole()) ?></strong>
+            </div>
+            <div>
+                <span class="dashboard-meta-label">Hyrja e fundit</span>
+                <strong><?= e($formatDateTime($_SESSION['last_login'] ?? null)) ?></strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard-card" id="reservations">
+        <div class="dashboard-section-header">
+            <div>
+                <h3>Rezervimet e mia</h3>
+                <p class="dashboard-section-subtitle">Te gjitha rezervimet e ruajtura ne llogarine tuaj.</p>
+            </div>
+        </div>
