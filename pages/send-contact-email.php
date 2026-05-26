@@ -139,3 +139,30 @@ $sendProjectContactEmail = static function (
         ];
     }
 };
+
+try {
+    $pdo = getPDO();
+    $insertStatement = $pdo->prepare(
+        'INSERT INTO contact_messages (user_id, name, email, subject, message)
+         VALUES (:user_id, :name, :email, :subject, :message)'
+    );
+
+    $insertStatement->bindValue(':user_id', $currentUser->getId(), PDO::PARAM_INT);
+    $insertStatement->bindValue(':name', $currentUser->getName(), PDO::PARAM_STR);
+    $insertStatement->bindValue(':email', $currentUser->getEmail(), PDO::PARAM_STR);
+    $insertStatement->bindValue(':subject', $old['subject'], PDO::PARAM_STR);
+    $insertStatement->bindValue(':message', $old['message'], PDO::PARAM_STR);
+    $insertStatement->execute();
+
+    $deliveryResult = $sendProjectContactEmail($old['subject'], $old['message'], $currentUser);
+    $_SESSION['contact_popup_success'] = $deliveryResult['sent']
+        ? $deliveryResult['message'] . ' Do t\'ju kontaktojme sa me shpejt.'
+        : $deliveryResult['message'];
+
+    redirect($contactPageUrl);
+} catch (PDOException $exception) {
+    $_SESSION['contact_old'] = $old;
+    $_SESSION['contact_errors'] = $errors;
+    setFlash('contact_error', 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.');
+    redirect($contactPageUrl);
+}
