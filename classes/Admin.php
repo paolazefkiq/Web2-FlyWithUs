@@ -1,13 +1,14 @@
 <?php
+
 class Admin extends User
 {
     public function getDashboardMessage(): string
     {
-        return 'Ju mund të menaxhoni të dhënat dummy, statistikat dhe përdoruesit statikë.';
+        return 'Menaxhoni destinacionet, rruget, rezervimet dhe mesazhet nga nje vend.';
     }
 
-    public function canManageUsers(): bool
-{
-    return true;
-}
+    public function canSendContactMessage(): bool
+    {
+        return false;
+    }
 }
