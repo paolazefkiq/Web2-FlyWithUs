@@ -42,6 +42,8 @@ $errors = [
     'passengers' => '',
 ];
 
+$pdo = null;
+
 try {
     $pdo = getPDO();
 
