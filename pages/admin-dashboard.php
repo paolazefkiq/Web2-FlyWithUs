@@ -30,3 +30,20 @@ $formatDateTime = static function (?string $value): string {
 $statusLabel = static function (string $status): string {
     return $status === 'cancelled' ? 'Anuluar' : 'Aktive';
 };
+try {
+    $pdo = getPDO();
+
+    $overviewStatement = $pdo->prepare(
+        "SELECT
+            (SELECT COUNT(*) FROM bookings) AS total_bookings,
+            (SELECT COUNT(*) FROM contact_messages) AS total_messages"
+    );
+    $overviewStatement->execute();
+    $overviewData = $overviewStatement->fetch();
+
+    if ($overviewData) {
+        $overview = [
+            'total_bookings' => (int)$overviewData['total_bookings'],
+            'total_messages' => (int)$overviewData['total_messages'],
+        ];
+    }
