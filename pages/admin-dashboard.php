@@ -165,3 +165,14 @@ require_once __DIR__ . '/../includes/nav.php';
                     <strong>Menaxho destinacionet</strong>
                     <span>Qytetet, shtetet, pershkrimet dhe imazhet.</span>
                 </a>
+                <a class="admin-link-card" href="<?= $GLOBALS['base_url'] ?>/pages/admin-origin-cities.php">
+                    <strong>Menaxho nisjet</strong>
+                    <span>Qytetet e nisjes dhe shtetet perkatese.</span>
+                </a>
+
+                <a class="admin-link-card" href="<?= $GLOBALS['base_url'] ?>/pages/admin-routes.php">
+                    <strong>Menaxho rruget</strong>
+                    <span>Nisjet, destinacionet dhe cmimet perkatese.</span>
+                </a>
+            </div>
+        </section>
