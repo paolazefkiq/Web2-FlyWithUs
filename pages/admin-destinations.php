@@ -339,6 +339,33 @@ catch (PDOException $exception) {
     $formError = 'Ndodhi një gabim. Ju lutemi provoni përsëri më vonë.';
        }
 
- 
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/nav.php';
+?>
+
+<main class="page-wrap dashboard-page">
+    <section class="dashboard-hero">
+        <div>
+            <h1>Menaxho Destinacionet</h1>
+            <p class="page-subtitle">Shtoni, përditësoni ose fshini destinacionet e ofertave.</p>
+        </div>
+        <div class="admin-toolbar">
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-dashboard.php" class="btn-secondary">Kthehu te dashboard</a>
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-origin-cities.php" class="btn-secondary">Menaxho nisjet</a>
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-routes.php" class="btn-primary">Menaxho rrugët</a>
+        </div>
+    </section>
+
+     <?php if ($flashSuccess): ?>
+        <div class="alert success"><?= e($flashSuccess) ?></div>
+    <?php endif; ?>
+
+    <?php if ($flashError): ?>
+        <div class="alert error"><?= e($flashError) ?></div>
+    <?php endif; ?>
+
+    <?php if ($formError): ?>
+        <div class="alert error"><?= e($formError) ?></div>
+    <?php endif; ?>
     
     
