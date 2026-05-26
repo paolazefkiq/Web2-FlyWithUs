@@ -152,3 +152,16 @@ require_once __DIR__ . '/../includes/nav.php';
                 </div>
             </div>
         </section>
+<section class="dashboard-card">
+            <div class="dashboard-section-header">
+                <div>
+                    <h3>Menaxhimi i ofertave</h3>
+                    <p class="dashboard-section-subtitle">Shtoni dhe perditesoni destinacionet, nisjet dhe rruget e fluturimeve.</p>
+                </div>
+            </div>
+
+            <div class="admin-links-grid">
+                <a class="admin-link-card" href="<?= $GLOBALS['base_url'] ?>/pages/admin-destinations.php">
+                    <strong>Menaxho destinacionet</strong>
+                    <span>Qytetet, shtetet, pershkrimet dhe imazhet.</span>
+                </a>
