@@ -44,3 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  WHERE email = :email_login OR username = :username_login
                  LIMIT 1'
             );
+            $statement->execute([
+                'email_login' => $login,
+                'username_login' => $login,
+            ]);
+
+            $matchedUser = $statement->fetch();
+
+            if ($matchedUser && password_verify($password, $matchedUser['password_hash'])) {
+                session_regenerate_id(true);
