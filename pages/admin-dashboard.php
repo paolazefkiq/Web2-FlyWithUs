@@ -47,3 +47,21 @@ try {
             'total_messages' => (int)$overviewData['total_messages'],
         ];
     }
+    $recentBookingsStatement = $pdo->prepare(
+        'SELECT
+            b.id,
+            b.status,
+            u.full_name,
+            oc.city AS origin_city,
+            d.city AS destination_city,
+            b.passengers_count,
+            b.total_price,
+            b.created_at
+         FROM bookings b
+         INNER JOIN users u ON u.id = b.user_id
+         INNER JOIN routes r ON r.id = b.route_id
+         INNER JOIN origin_cities oc ON oc.id = r.origin_city_id
+         INNER JOIN destinations d ON d.id = r.destination_id
+         ORDER BY b.created_at DESC, b.id DESC
+         LIMIT 5'
+    );
