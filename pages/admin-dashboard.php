@@ -115,3 +115,11 @@ require_once __DIR__ . '/../includes/nav.php';
     <?php if ($flashSuccess): ?>
         <div class="alert success"><?= e($flashSuccess) ?></div>
     <?php endif; ?>
+<?php if ($dashboardError): ?>
+        <div class="alert error"><?= e($dashboardError) ?></div>
+    <?php else: ?>
+        <section class="dashboard-stats">
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Rezervime</span>
+                <strong class="dashboard-stat-value"><?= e((string)$overview['total_bookings']) ?></strong>
+            </article>
