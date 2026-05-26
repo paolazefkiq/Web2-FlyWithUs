@@ -266,7 +266,37 @@ try {
                             'image_path' => $storedImagePath !== '' ? $storedImagePath : null,
                             'id' => $destinationId,
                         ]);
-                        
-         }
+
+                         if ($newUploadedImagePath !== null && $existingImagePath !== '' && $existingImagePath !== $newUploadedImagePath) {
+                            $deleteManagedDestinationImage($existingImagePath);
+                        }
+
+                        setFlash('flash_success', 'Destinacioni u përditësua me sukses.');
+                    } else {
+                        $statement = $pdo->prepare(
+                            'INSERT INTO destinations (city, country, description, image_path)
+                             VALUES (:city, :country, :description, :image_path)'
+                        );
+                        $statement->execute([
+                            'city' => $formData['city'],
+                            'country' => $formData['country'],
+                            'description' => $formData['description'],
+                            'image_path' => $storedImagePath !== '' ? $storedImagePath : null,
+                        ]);
+                        setFlash('flash_success', 'Destinacioni u shtua me sukses. Tani shtoni rrugen te "Menaxho rruget" qe te shfaqet ne oferta dhe rezervim.');
+                    }
+
+                    redirect($GLOBALS['base_url'] . '/pages/admin-destinations.php');
+                } catch (PDOException $exception) {
+                    if ($newUploadedImagePath !== null) {
+                        $deleteManagedDestinationImage($newUploadedImagePath);
+                    }
+
+                    $formError = 'Destinacioni nuk u ruajt. Ju lutemi kontrolloni të dhënat dhe provoni përsëri.';
+                }
+            }
+        }
     }
+ }
+    
     
