@@ -297,6 +297,48 @@ try {
             }
         }
     }
- }
+                    if ($editingId > 0 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $editStatement = $pdo->prepare(
+            'SELECT id, city, country, description, image_path
+             FROM destinations
+             WHERE id = :id
+             LIMIT 1'
+        );
+        $editStatement->execute(['id' => $editingId]);
+        $editingDestination = $editStatement->fetch();
+
+        if ($editingDestination) {
+            $formData = [
+                'city' => $editingDestination['city'],
+                'country' => $editingDestination['country'],
+                'description' => $editingDestination['description'],
+                'image_path' => $editingDestination['image_path'] ?? '',
+            ];
+        } else {
+            setFlash('flash_error', 'Destinacioni nuk u gjet.');
+            redirect($GLOBALS['base_url'] . '/pages/admin-destinations.php');
+        }
+    }
+
+    $destinationsStatement = $pdo->prepare(
+        'SELECT
+            d.id,
+            d.city,
+            d.country,
+            MIN(r.price) AS min_price,
+            COUNT(DISTINCT r.id) AS routes_count
+         FROM destinations d
+         LEFT JOIN routes r ON r.destination_id = d.id
+         GROUP BY d.id, d.city, d.country
+         ORDER BY d.city ASC'
+         );
+    $destinationsStatement->execute();
+    $destinations = $destinationsStatement->fetchAll();
+} 
+catch (PDOException $exception) {
+    $formError = 'Ndodhi një gabim. Ju lutemi provoni përsëri më vonë.';
+       }
+
+ 
     
     
