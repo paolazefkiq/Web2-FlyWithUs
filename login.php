@@ -110,3 +110,24 @@ require_once __DIR__ . '/includes/nav.php';
                     name="login"
                     placeholder="Email ose username"
                     value="<?= e($old['login']) ?>"
+                    >
+                <?php if ($errors['login']): ?>
+                    <div class="field-error"><?= e($errors['login']) ?></div>
+                <?php endif; ?>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Fjalekalimi"
+                >
+                <?php if ($errors['password']): ?>
+                    <div class="field-error"><?= e($errors['password']) ?></div>
+                <?php endif; ?>
+
+                <button type="submit">Kycu</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
