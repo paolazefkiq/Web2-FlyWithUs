@@ -422,4 +422,36 @@ require_once __DIR__ . '/../includes/nav.php';
             </div>
         </form>
     </section>
+
+      <section class="dashboard-card">
+        <div class="dashboard-section-header">
+            <div>
+                <h3>Lista e destinacioneve</h3>
+                <p class="dashboard-section-subtitle">Të gjitha destinacionet e ruajtura në databazë.</p>
+            </div>
+        </div>
+
+        <?php if (!$destinations): ?>
+            <p class="table-empty">Nuk ka ende destinacione të ruajtura.</p>
+        <?php else: ?>
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Qyteti</th>
+                        <th>Shteti</th>
+                        <th>Rrugë</th>
+                        <th>Çmimi min.</th>
+                        <th>Veprime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($destinations as $destination): ?>
+                        <tr>
+                            <td><?= e((string)$destination['id']) ?></td>
+                            <td><?= e($destination['city']) ?></td>
+                            <td><?= e($destination['country']) ?></td>
+                            <td><?= e((string)$destination['routes_count']) ?></td>
+                            <td><?= $destination['min_price'] !== null ? '$' . 
+                            e(number_format((float)$destination['min_price'], 2)) : '-' ?></td>
     
