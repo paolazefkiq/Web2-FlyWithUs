@@ -35,3 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($password === '') {
         $errors['password'] = 'Ju lutem plotesoni fjalekalimin.';
     }
+    if (!array_filter([$errors['login'], $errors['password']])) {
+        try {
+            $pdo = getPDO();
+            $statement = $pdo->prepare(
+                'SELECT id, full_name, email, username, password_hash, role
+                 FROM users
+                 WHERE email = :email_login OR username = :username_login
+                 LIMIT 1'
+            );
