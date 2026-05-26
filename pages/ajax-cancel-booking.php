@@ -62,3 +62,27 @@ try {
             'message' => 'Rezervimi eshte anuluar tashme.',
         ], 409);
     }
+$updateStatement = $pdo->prepare(
+        'UPDATE bookings
+         SET status = :status
+         WHERE id = :id AND user_id = :user_id'
+    );
+    $updateStatement->execute([
+        'status' => 'cancelled',
+        'id' => $bookingId,
+        'user_id' => $user->getId(),
+    ]);
+
+    sendJson([
+        'success' => true,
+        'booking_id' => $bookingId,
+        'status' => 'cancelled',
+        'status_label' => 'Anuluar',
+        'message' => 'Rezervimi u anulua me sukses.',
+    ]);
+} catch (PDOException $exception) {
+    sendJson([
+        'success' => false,
+        'message' => 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.',
+    ], 500);
+}
