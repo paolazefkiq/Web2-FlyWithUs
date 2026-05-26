@@ -367,5 +367,26 @@ require_once __DIR__ . '/../includes/nav.php';
     <?php if ($formError): ?>
         <div class="alert error"><?= e($formError) ?></div>
     <?php endif; ?>
+
+     <section class="dashboard-card">
+        <div class="dashboard-section-header">
+            <div>
+                <h3><?= $editingId > 0 ? 'Përditëso destinacionin' : 'Shto destinacion të ri' ?></h3>
+                <p class="dashboard-section-subtitle">Përdor të njëjtin format si destinacionet ekzistuese.</p>
+            </div>
+        </div>
+
+        <form method="POST" class="crud-form" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="action" value="<?= $editingId > 0 ? 'update' : 'create' ?>">
+            <?php if ($editingId > 0): ?>
+                <input type="hidden" name="destination_id" value="<?= e((string)$editingId) ?>">
+            <?php endif; ?>
+
+            <div class="crud-grid">
+                <div class="form-group">
+                    <label for="destination-city">Qyteti</label>
+                    <input id="destination-city" type="text" name="city" value="<?= e($formData['city']) ?>">
+                    <?php if ($errors['city']): ?><div class="field-error"><?= e($errors['city']) ?></div><?php endif; ?>
+                </div>
     
     
