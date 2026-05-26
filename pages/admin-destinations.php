@@ -388,5 +388,24 @@ require_once __DIR__ . '/../includes/nav.php';
                     <input id="destination-city" type="text" name="city" value="<?= e($formData['city']) ?>">
                     <?php if ($errors['city']): ?><div class="field-error"><?= e($errors['city']) ?></div><?php endif; ?>
                 </div>
-    
+                
+                 <div class="form-group">
+                    <label for="destination-country">Shteti</label>
+                    <input id="destination-country" type="text" name="country" value="<?= e($formData['country']) ?>">
+                    <?php if ($errors['country']): ?><div class="field-error"><?= e($errors['country']) ?></div><?php endif; ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="destination-image">Ngarko imazhin</label>
+                    <input id="destination-image" type="file" name="destination_image" accept=".jpg,.jpeg,.png,.webp,.avif">
+                    <p class="form-help">Formatet: JPG, JPEG, PNG, WEBP ose AVIF. Madhësia maksimale: 5MB.</p>
+                    <?php if ($formData['image_path'] !== ''): ?>
+                        <p class="form-help">Imazhi aktual: <code><?= e($formData['image_path']) ?></code></p>
+                    <?php else: ?>
+                        <p class="form-help">Nëse nuk ngarkoni imazh, do të përdoret fotografia standarde.</p>
+                    <?php endif; ?>
+                    <?php if ($errors['image']): ?><div class="field-error"><?= e($errors['image']) ?></div><?php endif; ?>
+                </div>
+            </div>
+
     
