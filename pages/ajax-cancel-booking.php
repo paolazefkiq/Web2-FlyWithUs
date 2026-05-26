@@ -34,3 +34,31 @@ if ($bookingId < 1) {
         'message' => 'Rezervimi nuk u gjet.',
     ], 422);
 }
+try {
+    $pdo = getPDO();
+
+    $bookingStatement = $pdo->prepare(
+        'SELECT id, status
+         FROM bookings
+         WHERE id = :id AND user_id = :user_id
+         LIMIT 1'
+    );
+    $bookingStatement->execute([
+        'id' => $bookingId,
+        'user_id' => $user->getId(),
+    ]);
+    $booking = $bookingStatement->fetch();
+
+    if (!$booking) {
+        sendJson([
+            'success' => false,
+            'message' => 'Rezervimi nuk u gjet.',
+        ], 404);
+    }
+
+    if ($booking['status'] === 'cancelled') {
+        sendJson([
+            'success' => false,
+            'message' => 'Rezervimi eshte anuluar tashme.',
+        ], 409);
+    }
