@@ -103,3 +103,65 @@ require_once __DIR__ . '/../includes/nav.php';
                 <p class="dashboard-section-subtitle">Te gjitha rezervimet e ruajtura ne llogarine tuaj.</p>
             </div>
         </div>
+ <div id="bookingActionMessage" class="alert info" hidden></div>
+
+        <?php if ($bookingError): ?>
+            <div class="alert error"><?= e($bookingError) ?></div>
+        <?php elseif (!$customerBookings): ?>
+            <p class="table-empty">Nuk keni ende rezervime te ruajtura.</p>
+        <?php else: ?>
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Rruga</th>
+                        <th>Nisja</th>
+                        <th>Kthimi</th>
+                        <th>Pasagjere</th>
+                        <th>Totali</th>
+                        <th>Statusi</th>
+                        <th>Veprime</th>
+                        <th>Ruajtur me</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($customerBookings as $booking): ?>
+                        <?php $isCancelled = ($booking['status'] ?? 'active') === 'cancelled'; ?>
+                        <tr id="booking-row-<?= e((string)$booking['id']) ?>">
+                            <td><?= e((string)$booking['id']) ?></td>
+                            <td><?= e($booking['origin_city'] . ' - ' . $booking['origin_country'] . ' / ' . $booking['destination_city'] . ' - ' . $booking['destination_country']) ?></td>
+                            <td><?= e($booking['departure_date']) ?></td>
+                            <td><?= e($booking['return_date'] ?? '-') ?></td>
+                            <td><?= e((string)$booking['passengers_count']) ?></td>
+                            <td>$<?= e(number_format((float)$booking['total_price'], 2)) ?></td>
+                            <td>
+                                <span
+                                    class="status-badge <?= $isCancelled ? 'status-badge--cancelled' : 'status-badge--active' ?>"
+                                    data-booking-status
+                                >
+                                    <?= e($statusLabel($booking['status'] ?? 'active')) ?>
+                                </span>
+                            </td>
+                            <td data-booking-actions>
+                                <?php if ($isCancelled): ?>
+                                    <span class="table-action-note">Anuluar</span>
+                                <?php else: ?>
+                                    <button
+                                        type="button"
+                                        class="btn-danger btn-small js-cancel-booking"
+                                        data-booking-id="<?= e((string)$booking['id']) ?>"
+                                    >
+                                        Anulo rezervimin
+                                    </button>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= e($formatDateTime($booking['created_at'])) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </section>
+</main>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
