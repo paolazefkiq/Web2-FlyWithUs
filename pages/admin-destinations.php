@@ -204,5 +204,48 @@ try {
             'image_path' => $existingImagePath,
         ];
         
+         $errors = $validateDestinationForm($formData);
+        $imageUpload = $_FILES['destination_image'] ?? null;
+        $preparedImageUpload = $prepareDestinationImageUpload($imageUpload, $formData['city']);
+
+        if ($preparedImageUpload['error'] !== '') {
+            $errors['image'] = $preparedImageUpload['error'];
+        }
+
+        if ($errors['city'] === '' && $formData['city'] !== '') {
+            $duplicateDestinationStatement = $pdo->prepare(
+                'SELECT id
+                 FROM destinations
+                 WHERE city = :city' . ($action === 'update' ? ' AND id <> :id' : '') . '
+                 LIMIT 1'
+            );
+            $duplicateDestinationParams = ['city' => $formData['city']];
+
+            if ($action === 'update') {
+                $duplicateDestinationParams['id'] = $destinationId;
+            }
+
+            $duplicateDestinationStatement->execute($duplicateDestinationParams);
+
+            if ($duplicateDestinationStatement->fetch()) {
+                $errors['city'] = 'Ky qytet ekziston tashme si destinacion.';
+            }
+        }
+
+         if (!array_filter($errors)) {
+            $storedImagePath = $existingImagePath;
+            $newUploadedImagePath = null;
+
+            if ($preparedImageUpload['relative_path'] !== null) {
+                if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0755, true) && !is_dir($uploadDirectory)) {
+                    $formError = 'Folderi i imazheve nuk u krijua. Provoni përsëri.';
+                } elseif (!move_uploaded_file($imageUpload['tmp_name'], $preparedImageUpload['absolute_path'])) {
+                    $formError = 'Imazhi nuk u ruajt. Ju lutemi provoni përsëri.';
+                } else {
+                    $storedImagePath = $preparedImageUpload['relative_path'];
+                    $newUploadedImagePath = $preparedImageUpload['relative_path'];
+                    $formData['image_path'] = $storedImagePath;
+                }
+            }
         }
     }
