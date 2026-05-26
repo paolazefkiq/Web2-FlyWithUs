@@ -208,3 +208,23 @@ require_once __DIR__ . '/../includes/nav.php';
                                 <td><?= e($booking['origin_city'] . ' / ' . $booking['destination_city']) ?></td>
                                 <td><?= e((string)$booking['passengers_count']) ?></td>
                                 <td>$<?= e(number_format((float)$booking['total_price'], 2)) ?></td>
+                                 <td>
+                                    <span class="status-badge <?= $isCancelled ? 'status-badge--cancelled' : 'status-badge--active' ?>">
+                                        <?= e($statusLabel($booking['status'] ?? 'active')) ?>
+                                    </span>
+                                </td>
+                                <td><?= e($formatDateTime($booking['created_at'])) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </section>
+
+        <section class="dashboard-card" id="messages">
+            <div class="dashboard-section-header">
+                <div>
+                    <h3>Mesazhet e fundit</h3>
+                    <p class="dashboard-section-subtitle">Pese mesazhet me te reja nga forma e kontaktit.</p>
+                </div>
+            </div>
