@@ -228,3 +228,36 @@ require_once __DIR__ . '/../includes/nav.php';
                     <p class="dashboard-section-subtitle">Pese mesazhet me te reja nga forma e kontaktit.</p>
                 </div>
             </div>
+<?php if (!$recentMessages): ?>
+                <p class="table-empty">Nuk ka ende mesazhe te ruajtura.</p>
+            <?php else: ?>
+                <table class="simple-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Derguesi</th>
+                            <th>Email</th>
+                            <th>Subjekti</th>
+                            <th>Mesazhi</th>
+                            <th>Derguar me</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($recentMessages as $message): ?>
+                            <tr>
+                                <td><?= e((string)$message['id']) ?></td>
+                                <td><?= e($message['name']) ?></td>
+                                <td><?= e($message['email']) ?></td>
+                                <td><?= e($message['subject']) ?></td>
+                                <td><?= e(mb_strimwidth($message['message'], 0, 72, '...')) ?></td>
+                                <td><?= e($formatDateTime($message['created_at'])) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </section>
+    <?php endif; ?>
+</main>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
