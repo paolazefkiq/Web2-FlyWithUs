@@ -72,3 +72,9 @@ storeUserSession([
                 if ($matchedUser['role'] === 'customer' && $redirectAfterLogin !== '') {
                     redirect($redirectAfterLogin);
                 }
+                redirect(
+                    $matchedUser['role'] === 'admin'
+                        ? $GLOBALS['base_url'] . '/pages/admin-dashboard.php'
+                        : $GLOBALS['base_url'] . '/pages/customer-dashboard.php'
+                );
+            }
