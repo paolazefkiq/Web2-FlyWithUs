@@ -169,6 +169,119 @@ try {
     $formError = 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.';
 }
 
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/nav.php';
+?>
+
+<main class="page-wrap dashboard-page">
+    <section class="dashboard-hero">
+        <div>
+            <h1>Menaxho Nisjet</h1>
+            <p class="page-subtitle">Shtoni, perditesoni ose fshini qytetet e nisjes.</p>
+        </div>
+        <div class="admin-toolbar">
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-dashboard.php" class="btn-secondary">Kthehu te dashboard</a>
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-destinations.php" class="btn-secondary">Menaxho destinacionet</a>
+            <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-routes.php" class="btn-primary">Menaxho rruget</a>
+        </div>
+    </section>
+
+    <?php if ($flashSuccess): ?>
+        <div class="alert success"><?= e($flashSuccess) ?></div>
+    <?php endif; ?>
+
+    <?php if ($flashError): ?>
+        <div class="alert error"><?= e($flashError) ?></div>
+    <?php endif; ?>
+
+    <?php if ($formError): ?>
+        <div class="alert error"><?= e($formError) ?></div>
+    <?php endif; ?>
+<section class="dashboard-card">
+        <div class="dashboard-section-header">
+            <div>
+                <h3><?= $editingId > 0 ? 'Perditeso qytetin e nisjes' : 'Shto qytet te ri nisjeje' ?></h3>
+                <p class="dashboard-section-subtitle">Perdor te njejtin format si qytetet ekzistuese te nisjes.</p>
+            </div>
+        </div>
+
+        <form method="POST" class="crud-form" novalidate>
+            <input type="hidden" name="action" value="<?= $editingId > 0 ? 'update' : 'create' ?>">
+            <?php if ($editingId > 0): ?>
+                <input type="hidden" name="origin_city_id" value="<?= e((string)$editingId) ?>">
+            <?php endif; ?>
+
+            <div class="crud-grid">
+                <div class="form-group">
+                    <label for="origin-city">Qyteti</label>
+                    <input id="origin-city" type="text" name="city" value="<?= e($formData['city']) ?>">
+                    <?php if ($errors['city']): ?><div class="field-error"><?= e($errors['city']) ?></div><?php endif; ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="origin-country">Shteti</label>
+                    <input id="origin-country" type="text" name="country" value="<?= e($formData['country']) ?>">
+                    <?php if ($errors['country']): ?><div class="field-error"><?= e($errors['country']) ?></div><?php endif; ?>
+                </div>
+            </div>
+
+            <div class="crud-actions">
+                <button type="submit" class="btn-primary"><?= $editingId > 0 ? 'Ruaj ndryshimet' : 'Shto qytetin' ?></button>
+                <?php if ($editingId > 0): ?>
+                    <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-origin-cities.php" class="btn-secondary">Anulo</a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </section>
+
+    <section class="dashboard-card">
+        <div class="dashboard-section-header">
+            <div>
+                <h3>Lista e nisjeve</h3>
+                <p class="dashboard-section-subtitle">Qytetet e nisjes te ruajtura ne databaze dhe rruget e lidhura.</p>
+            </div>
+        </div>
+
+        <?php if (!$originCities): ?>
+            <p class="table-empty">Nuk ka ende qytete nisjeje te ruajtura.</p>
+        <?php else: ?>
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Qyteti</th>
+                        <th>Shteti</th>
+                        <th>Rruge</th>
+                        <th>Veprime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($originCities as $originCity): ?>
+                        <tr>
+                            <td><?= e((string)$originCity['id']) ?></td>
+                            <td><?= e($originCity['city']) ?></td>
+                            <td><?= e($originCity['country']) ?></td>
+                            <td><?= e((string)$originCity['routes_count']) ?></td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-origin-cities.php?edit=<?= e((string)$originCity['id']) ?>" class="btn-secondary btn-small">Edito</a>
+                                    <form method="POST" onsubmit="return confirm('A jeni i sigurt qe deshironi ta fshini kete qytet nisjeje?');">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="origin_city_id" value="<?= e((string)$originCity['id']) ?>">
+                                        <button type="submit" class="btn-danger btn-small">Fshi</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </section>
+</main>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
+
 
 
     
