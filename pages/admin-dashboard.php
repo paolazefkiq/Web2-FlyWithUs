@@ -65,3 +65,18 @@ try {
          ORDER BY b.created_at DESC, b.id DESC
          LIMIT 5'
     );
+    $recentBookingsStatement->execute();
+    $recentBookings = $recentBookingsStatement->fetchAll();
+
+    $recentMessagesStatement = $pdo->prepare(
+        'SELECT
+            cm.id,
+            cm.name,
+            cm.email,
+            cm.subject,
+            cm.message,
+            cm.created_at
+         FROM contact_messages cm
+         ORDER BY cm.created_at DESC, cm.id DESC
+         LIMIT 5'
+    );
