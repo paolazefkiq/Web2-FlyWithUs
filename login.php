@@ -84,3 +84,15 @@ storeUserSession([
         }
     }
 }
+$pageTitle = 'Login';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/nav.php';
+?>
+<main class="page-wrap narrow">
+    <section class="about-form single-box">
+        <div class="about-form-box" id="about-form-box">
+            <h3>Login</h3>
+            <p class="demo-note">
+                Klientet demo: customer1, customer2 / Customer123<br>
+                Admin: admin@flywithus.com ose admin1 / Admin123
+            </p>
