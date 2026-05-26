@@ -96,3 +96,17 @@ require_once __DIR__ . '/includes/nav.php';
                 Klientet demo: customer1, customer2 / Customer123<br>
                 Admin: admin@flywithus.com ose admin1 / Admin123
             </p>
+<?php if ($errors['general']): ?>
+                <div class="alert error"><?= e($errors['general']) ?></div>
+            <?php endif; ?>
+
+            <form method="POST" action="<?= e($_SERVER['PHP_SELF']) ?>" novalidate>
+                <?php if ($redirectAfterLogin !== ''): ?>
+                    <input type="hidden" name="post_login_redirect" value="<?= e($redirectAfterLogin) ?>">
+                <?php endif; ?>
+
+                <input
+                    type="text"
+                    name="login"
+                    placeholder="Email ose username"
+                    value="<?= e($old['login']) ?>"
