@@ -78,3 +78,9 @@ storeUserSession([
                         : $GLOBALS['base_url'] . '/pages/customer-dashboard.php'
                 );
             }
+             $errors['general'] = 'Email ose fjalekalim i pasakte.';
+        } catch (PDOException $exception) {
+            $errors['general'] = 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.';
+        }
+    }
+}
