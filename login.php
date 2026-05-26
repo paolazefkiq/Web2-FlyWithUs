@@ -60,3 +60,15 @@ storeUserSession([
                     'username' => $matchedUser['username'],
                     'role' => $matchedUser['role'],
                 ]);
+                $_SESSION['last_login'] = date('Y-m-d H:i:s');
+
+                $updateStatement = $pdo->prepare(
+                    'UPDATE users SET last_login_at = NOW() WHERE id = :id'
+                );
+                $updateStatement->execute(['id' => $matchedUser['id']]);
+
+                setFlash('flash_success', 'Jeni kycur me sukses.');
+
+                if ($matchedUser['role'] === 'customer' && $redirectAfterLogin !== '') {
+                    redirect($redirectAfterLogin);
+                }
