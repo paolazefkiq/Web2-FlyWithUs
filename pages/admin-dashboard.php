@@ -123,3 +123,32 @@ require_once __DIR__ . '/../includes/nav.php';
                 <span class="dashboard-stat-label">Rezervime</span>
                 <strong class="dashboard-stat-value"><?= e((string)$overview['total_bookings']) ?></strong>
             </article>
+            <article class="dashboard-stat-card">
+                <span class="dashboard-stat-label">Mesazhe</span>
+                <strong class="dashboard-stat-value"><?= e((string)$overview['total_messages']) ?></strong>
+            </article>
+        </section>
+
+        <section class="dashboard-card">
+            <div class="dashboard-section-header">
+                <div>
+                    <h3>Llogaria juaj</h3>
+                    <p class="dashboard-section-subtitle">Te dhenat baze te administratorit te kycur.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-meta-list">
+                <div>
+                    <span class="dashboard-meta-label">Perdoruesi</span>
+                    <strong><?= e($user->getName()) ?></strong>
+                </div>
+                <div>
+                    <span class="dashboard-meta-label">Email</span>
+                    <strong><?= e($user->getEmail()) ?></strong>
+                </div>
+                <div>
+                    <span class="dashboard-meta-label">Roli</span>
+                    <strong><?= e($user->getRole()) ?></strong>
+                </div>
+            </div>
+        </section>
