@@ -1,14 +1,14 @@
 <?php
+
 class Customer extends User
 {
     public function getDashboardMessage(): string
     {
-        return 'Ju mund të shihni preferencat, rezervimet dummy dhe ofertat personale.';
+        return 'Shikoni rezervimet dhe mesazhet e ruajtura ne llogarine tuaj.';
     }
 
-    public function canManageUsers(): bool
-{
-    return false;
+    public function canSendContactMessage(): bool
+    {
+        return true;
+    }
 }
-}
-?>
