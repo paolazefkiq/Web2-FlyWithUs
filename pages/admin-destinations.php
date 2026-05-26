@@ -455,3 +455,23 @@ require_once __DIR__ . '/../includes/nav.php';
                             <td><?= $destination['min_price'] !== null ? '$' . 
                             e(number_format((float)$destination['min_price'], 2)) : '-' ?></td>
     
+                         <td>
+                                <div class="table-actions">
+                                    <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-destinations.php?edit=<?= 
+                                    e((string)$destination['id']) ?>" class="btn-secondary btn-small">Edito</a>
+                                    <form method="POST" onsubmit="return confirm('A jeni i sigurt që dëshironi ta fshini këtë destinacion?');">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="destination_id" value="<?= e((string)$destination['id']) ?>">
+                                        <button type="submit" class="btn-danger btn-small">Fshi</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </section>
+</main>
+
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
