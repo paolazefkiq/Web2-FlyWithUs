@@ -104,3 +104,14 @@ try {
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/nav.php';
 ?>
+<main class="page-wrap dashboard-page">
+    <section class="dashboard-hero">
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p class="page-subtitle"><?= e($user->getDashboardMessage()) ?></p>
+        </div>
+    </section>
+
+    <?php if ($flashSuccess): ?>
+        <div class="alert success"><?= e($flashSuccess) ?></div>
+    <?php endif; ?>
