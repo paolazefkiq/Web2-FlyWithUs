@@ -53,3 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($matchedUser && password_verify($password, $matchedUser['password_hash'])) {
                 session_regenerate_id(true);
+storeUserSession([
+                    'id' => (int)$matchedUser['id'],
+                    'name' => $matchedUser['full_name'],
+                    'email' => $matchedUser['email'],
+                    'username' => $matchedUser['username'],
+                    'role' => $matchedUser['role'],
+                ]);
