@@ -176,3 +176,35 @@ require_once __DIR__ . '/../includes/nav.php';
                 </a>
             </div>
         </section>
+<section class="dashboard-card">
+            <div class="dashboard-section-header">
+                <div>
+                    <h3>Rezervimet e fundit</h3>
+                    <p class="dashboard-section-subtitle">Pese rezervimet me te reja te ruajtura ne sistem.</p>
+                </div>
+            </div>
+
+            <?php if (!$recentBookings): ?>
+                <p class="table-empty">Nuk ka ende rezervime te ruajtura.</p>
+            <?php else: ?>
+                <table class="simple-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Klienti</th>
+                            <th>Rruga</th>
+                            <th>Pasagjere</th>
+                            <th>Totali</th>
+                            <th>Statusi</th>
+                            <th>Ruajtur me</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($recentBookings as $booking): ?>
+                            <?php $isCancelled = ($booking['status'] ?? 'active') === 'cancelled'; ?>
+                            <tr>
+                                <td><?= e((string)$booking['id']) ?></td>
+                                <td><?= e($booking['full_name']) ?></td>
+                                <td><?= e($booking['origin_city'] . ' / ' . $booking['destination_city']) ?></td>
+                                <td><?= e((string)$booking['passengers_count']) ?></td>
+                                <td>$<?= e(number_format((float)$booking['total_price'], 2)) ?></td>
