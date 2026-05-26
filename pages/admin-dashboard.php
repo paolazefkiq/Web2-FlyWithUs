@@ -80,3 +80,27 @@ try {
          ORDER BY cm.created_at DESC, cm.id DESC
          LIMIT 5'
     );
+    $recentBookingsStatement->execute();
+    $recentBookings = $recentBookingsStatement->fetchAll();
+
+    $recentMessagesStatement = $pdo->prepare(
+        'SELECT
+            cm.id,
+            cm.name,
+            cm.email,
+            cm.subject,
+            cm.message,
+            cm.created_at
+         FROM contact_messages cm
+         ORDER BY cm.created_at DESC, cm.id DESC
+         LIMIT 5'
+    );
+    $recentMessagesStatement->execute();
+    $recentMessages = $recentMessagesStatement->fetchAll();
+} catch (PDOException $exception) {
+    $dashboardError = 'Ndodhi nje gabim. Ju lutemi provoni perseri me vone.';
+}
+
+require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/nav.php';
+?>
