@@ -407,5 +407,19 @@ require_once __DIR__ . '/../includes/nav.php';
                     <?php if ($errors['image']): ?><div class="field-error"><?= e($errors['image']) ?></div><?php endif; ?>
                 </div>
             </div>
+            
+             <div class="form-group">
+                <label for="destination-description">Përshkrimi</label>
+                <textarea id="destination-description" name="description" rows="4"><?= e($formData['description']) ?></textarea>
+                <?php if ($errors['description']): ?><div class="field-error"><?= e($errors['description']) ?></div><?php endif; ?>
+            </div>
 
+            <div class="crud-actions">
+                <button type="submit" class="btn-primary"><?= $editingId > 0 ? 'Ruaj ndryshimet' : 'Shto destinacionin' ?></button>
+                <?php if ($editingId > 0): ?>
+                    <a href="<?= $GLOBALS['base_url'] ?>/pages/admin-destinations.php" class="btn-secondary">Anulo</a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </section>
     
